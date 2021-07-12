@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Quest</string>
+    <string name="username">username</string>
+    <string name="password">password</string>
+    <string name="login">LOGIN</string>
+    <string name="signup">signup</string>
+    <string name="inside_home_activity">This is the Home Activity</string>
 </resources>

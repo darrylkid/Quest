@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="horizontal_edge_margin">20dp</dimen>
+    <dimen name="vertical_edge_margin">50dp</dimen>
+    <dimen name="distance_between_views">10dp</dimen>
+</resources>
