@@ -1,8 +1,11 @@
 package com.codepath.quest;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,6 +13,8 @@ import android.widget.EditText;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
+
+import java.util.zip.Inflater;
 
 public class SignupActivity extends AppCompatActivity {
     @Override
@@ -78,5 +83,22 @@ public class SignupActivity extends AppCompatActivity {
             }
         };
         newUser.signUpInBackground(signupHandler);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the action bar with the back menu.
+        getMenuInflater().inflate(R.menu.menu_back, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.miBackSignup) {
+            Navigation.goToLoginActivity(SignupActivity.this);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 }

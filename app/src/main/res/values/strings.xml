@@ -6,4 +6,5 @@
     <string name="signup">signup</string>
     <string name="inside_home_activity">This is the Home Activity</string>
     <string name="submit">SUBMIT</string>
+    <string name="back">Back</string>
 </resources>
