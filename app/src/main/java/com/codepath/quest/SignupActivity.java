@@ -73,7 +73,7 @@ public class SignupActivity extends AppCompatActivity {
             public void done(ParseException e) {
                 String msg = "Signup";
                 if (e == null) {
-                    // Success! User has logged in successfully.
+                    // Success! User has signed up successfully.
                     QuestToast.xSuccessful(SignupActivity.this, msg);
                     Navigation.goToHomeActivity(SignupActivity.this);
                     finish();
@@ -85,6 +85,7 @@ public class SignupActivity extends AppCompatActivity {
         newUser.signUpInBackground(signupHandler);
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the action bar with the back menu.
@@ -95,6 +96,7 @@ public class SignupActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.miBackSignup) {
+            // Back button.
             Navigation.goToLoginActivity(SignupActivity.this);
             return true;
         } else {

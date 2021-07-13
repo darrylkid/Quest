@@ -18,6 +18,14 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Add automatic login functionality by checking to see
+        // an user is logged in already.
+        if (ParseUser.getCurrentUser() != null) {
+            Navigation.goToHomeActivity(LoginActivity.this);
+            return;
+        }
+
         setContentView(R.layout.activity_login);
 
         // Set up onClickListener for the login button.
@@ -55,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Navigation.goToSignupActivity(LoginActivity.this);
+                finish();
             }
         };
         btnSignupInLoginActivity.setOnClickListener(signupHandler);
