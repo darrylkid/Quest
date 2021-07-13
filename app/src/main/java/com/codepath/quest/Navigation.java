@@ -20,5 +20,7 @@ public class Navigation {
     }
 
     public static void goToLoginActivity(Context context) {
+        Intent intent = new Intent(context, LoginActivity.class);
+        context.startActivity(intent);
     }
 }
