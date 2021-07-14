@@ -1,4 +1,4 @@
-package com.codepath.quest;
+package com.codepath.quest.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,11 +10,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.codepath.quest.helper.Navigation;
+import com.codepath.quest.helper.QuestToast;
+import com.codepath.quest.R;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
-
-import java.util.zip.Inflater;
 
 public class SignupActivity extends AppCompatActivity {
     @Override

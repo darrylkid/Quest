@@ -13,9 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Quest"
         android:name=".ParseApplication">
-        <activity android:name=".SignupActivity"/>
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".activity.SignupActivity"/>
+        <activity android:name=".activity.HomeActivity" />
+        <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

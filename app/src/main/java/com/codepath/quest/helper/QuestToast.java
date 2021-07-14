@@ -1,4 +1,4 @@
-package com.codepath.quest;
+package com.codepath.quest.helper;
 
 import android.content.Context;
 import android.widget.Toast;
