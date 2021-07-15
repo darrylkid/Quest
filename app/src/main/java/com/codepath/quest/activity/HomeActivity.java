@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -14,12 +15,23 @@ import com.codepath.quest.R;
 import com.codepath.quest.fragment.RecentQuestionsFragment;
 import com.codepath.quest.fragment.SearchFragment;
 import com.codepath.quest.fragment.SubjectsFragment;
+import com.codepath.quest.helper.Navigation;
+import com.codepath.quest.helper.QuestToast;
+import com.codepath.quest.model.Subject;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.parse.LogOutCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.zip.Inflater;
+
 public class HomeActivity extends AppCompatActivity {
+    // Constants for the data models to use.
+    public static final String KEY_PARENT = "parent";
+    public static final String KEY_USER = "user";
 
     private Fragment currentFragment;
     private final int FRAG_CONTAINER_ID = R.id.rlHome;
@@ -29,7 +41,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
         final BottomNavigationView bnvHome = findViewById(R.id.bnvHome);
@@ -69,4 +80,47 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+
+    // Inflate menu resource to the action bar.
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_home_top, menu);
+        return true;
+    }
+
+    // On click listener for the action bar.
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int selectedItemId = item.getItemId();
+
+        if (selectedItemId == R.id.iLogoutHome) {
+            // Log out menu item.
+            logOut();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    /**
+     * Logs the user out from the Parse database and
+     * navigates back to the login activity.
+     */
+    public void logOut() {
+        ParseUser.logOutInBackground(new LogOutCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    // Success!
+                    QuestToast.xSuccessful(HomeActivity.this, "Logout");
+                } else {
+                    // Failure.
+                    QuestToast.xFailed(HomeActivity.this, "Logout");
+                }
+            }
+        });
+        Navigation.goToLoginActivity(HomeActivity.this);
+        finish();
+    }
 }

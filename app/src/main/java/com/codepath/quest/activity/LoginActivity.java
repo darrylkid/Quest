@@ -56,7 +56,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 // Valid input. Try logging in.
                 login(username, password);
-                finish();
             }
         };
         btnLogin.setOnClickListener(loginHandler);
