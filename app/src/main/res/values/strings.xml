@@ -16,4 +16,8 @@
     <string name="search">Search</string>
     <string name="subjects">Subjects</string>
     <string name="logout">Log Out</string>
+    <string name="new_subject">NEW SUBJECT</string>
+    <string name="enter_subject">e.g. ENGL 1101</string>
+    <string name="create">CREATE</string>
+    <string name="cancel">CANCEL</string>
 </resources>

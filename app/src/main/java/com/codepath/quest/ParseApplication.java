@@ -2,6 +2,11 @@ package com.codepath.quest;
 
 import android.app.Application;
 
+import com.codepath.quest.model.Answer;
+import com.codepath.quest.model.Page;
+import com.codepath.quest.model.Question;
+import com.codepath.quest.model.Section;
+import com.codepath.quest.model.Subject;
 import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -22,6 +27,12 @@ public class ParseApplication extends Application {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         builder.networkInterceptors().add(httpLoggingInterceptor);
+
+        ParseObject.registerSubclass(Subject.class);
+        ParseObject.registerSubclass(Section.class);
+        ParseObject.registerSubclass(Page.class);
+        ParseObject.registerSubclass(Question.class);
+        ParseObject.registerSubclass(Answer.class);
 
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId("IuO7g88uTAhhdb0KVD6j2jyYJvCXSuhPAKQ44YOY")

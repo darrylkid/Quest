@@ -22,6 +22,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.jetbrains.annotations.NotNull;
@@ -29,9 +31,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.zip.Inflater;
 
 public class HomeActivity extends AppCompatActivity {
-    // Constants for the data models to use.
+    // Constants for the data models and fragments to use.
     public static final String KEY_PARENT = "parent";
     public static final String KEY_USER = "user";
+    public static final String KEY_DESCRIPTION = "description";
+    public static final String KEY_DIALOG = "dialog";
+    public static final String KEY_REQUEST = "request";
 
     private Fragment currentFragment;
     private final int FRAG_CONTAINER_ID = R.id.rlHome;
@@ -97,9 +102,8 @@ public class HomeActivity extends AppCompatActivity {
             // Log out menu item.
             logOut();
             return true;
-        } else {
-            return super.onOptionsItemSelected(item);
         }
+        return true;
     }
 
 
