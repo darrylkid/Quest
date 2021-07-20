@@ -1,6 +1,7 @@
 package com.codepath.quest.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.view.View;
@@ -32,6 +33,10 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
+        // Set up toolbar.
+        Toolbar toolbar = findViewById(R.id.tbLogin);
+        setSupportActionBar(toolbar);
+
         // Set up onClickListener for the login button.
         btnLogin = findViewById(R.id.btnLogin);
         View.OnClickListener loginHandler = new View.OnClickListener() {
@@ -45,12 +50,12 @@ public class LoginActivity extends AppCompatActivity {
 
                 // Error handling for valid user input.
                 if (username.equals("")) {
-                    QuestToast.pleaseEnterX(LoginActivity.this, "username");
+                    QuestToast.pleaseEnter(LoginActivity.this, "username");
                     return;
                 }
 
                 if (password.equals("")) {
-                    QuestToast.pleaseEnterX(LoginActivity.this, "password");
+                    QuestToast.pleaseEnter(LoginActivity.this, "password");
                     return;
                 }
 
@@ -88,12 +93,12 @@ public class LoginActivity extends AppCompatActivity {
                 if (e == null) {
                     // Success! The user is successfully logged in and
                     // can go to the HomeActivity.
-                    QuestToast.xSuccessful(LoginActivity.this, msg);
+                    QuestToast.successful(LoginActivity.this, msg);
                     Navigation.goToHomeActivity(LoginActivity.this);
                     finish();
                 } else {
                     // Login failed.
-                    QuestToast.xFailed(LoginActivity.this, msg);
+                    QuestToast.failed(LoginActivity.this, msg);
                 }
             }
         };

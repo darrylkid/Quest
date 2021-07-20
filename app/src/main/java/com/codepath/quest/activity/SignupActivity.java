@@ -2,6 +2,7 @@ package com.codepath.quest.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,6 +24,10 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        // Set up toolbar.
+        Toolbar toolbar = findViewById(R.id.tbSignup);
+        setSupportActionBar(toolbar);
+
         // Set up an onClickListener for the sign up button.
         Button btnSubmitSignup = findViewById(R.id.btnSubmitSignup);
         View.OnClickListener submitHandler = new View.OnClickListener() {
@@ -36,13 +41,13 @@ public class SignupActivity extends AppCompatActivity {
 
                 // Error handling for invalid user username.
                 if (username.equals("")) {
-                    QuestToast.pleaseEnterX(SignupActivity.this, "username");
+                    QuestToast.pleaseEnter(SignupActivity.this, "username");
                     return;
                 }
 
                 // Error handling for invalid user password.
                 if (password.equals("")) {
-                    QuestToast.pleaseEnterX(SignupActivity.this, "password");
+                    QuestToast.pleaseEnter(SignupActivity.this, "password");
                     return;
                 }
 
@@ -75,11 +80,11 @@ public class SignupActivity extends AppCompatActivity {
                 String msg = "Signup";
                 if (e == null) {
                     // Success! User has signed up successfully.
-                    QuestToast.xSuccessful(SignupActivity.this, msg);
+                    QuestToast.successful(SignupActivity.this, msg);
                     Navigation.goToHomeActivity(SignupActivity.this);
                     finish();
                 } else {
-                    QuestToast.xFailed(SignupActivity.this, msg);
+                    QuestToast.failed(SignupActivity.this, msg);
                 }
             }
         };

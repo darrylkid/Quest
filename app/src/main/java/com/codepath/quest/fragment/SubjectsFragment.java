@@ -1,9 +1,14 @@
 package com.codepath.quest.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ActionMenuItemView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
@@ -11,13 +16,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.codepath.quest.R;
 import com.codepath.quest.activity.HomeActivity;
 import com.codepath.quest.adapter.CategoryAdapter;
+import com.codepath.quest.helper.QuestToast;
 import com.codepath.quest.model.Subject;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -41,6 +51,7 @@ public class SubjectsFragment extends Fragment {
         // Set up the adapter.
         List<ParseObject> subjectList = new ArrayList<>();
         subjectAdapter = new CategoryAdapter(getContext(), subjectList);
+
     }
 
     @Override
@@ -51,8 +62,16 @@ public class SubjectsFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull @NotNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // Set the action bar title.
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        HomeActivity.setActionBarText(actionBar, getString(R.string.subjects), "");
+
+        // Set logout icon to be invisible.
+        ActionMenuItemView logoutIcon = getActivity().findViewById(R.id.iLogoutHome);
+        logoutIcon.setVisibility(View.INVISIBLE);
 
         // Set up the recycler view.
         rvSubjects = view.findViewById(R.id.rvSubjects);
@@ -60,7 +79,10 @@ public class SubjectsFragment extends Fragment {
         rvSubjects.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Load up the subjects already created by the current user.
-        Subject.querySubjects(subjectAdapter);
+        if (subjectAdapter.getCategoryList().size() == 0) {
+            Subject.querySubjects(subjectAdapter);
+        }
+
 
         // Set up an onclick listener for the
         // "Add Subject" floating action button
@@ -73,11 +95,11 @@ public class SubjectsFragment extends Fragment {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragment.show(fragmentManager,"Subject");
 
-                // Gets invoked when the user presses the "Create" option and their input
-                // is valid.
+                // Gets invoked when the user presses the "Create" option inside
+                // the dialog and their input is valid.
                 FragmentResultListener onAddSubjectDialogResult = new FragmentResultListener() {
                     @Override
-                    public void onFragmentResult(@NonNull @NotNull String requestKey, @NonNull @NotNull Bundle result) {
+                    public void onFragmentResult(@NotNull String requestKey, @NonNull Bundle result) {
                         // When the user creates a new subject from the dialog,
                         // add it to the recycler view for the subject to be displayed.
                         String subjectName = result.getString(HomeActivity.KEY_DIALOG);

@@ -4,15 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     tools:context=".activity.LoginActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tbLogin"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:titleTextColor="@color/white"/>
 
     <ImageView
         android:id="@+id/ivLogoLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/tbLogin"
         android:layout_marginTop="@dimen/vertical_edge_margin"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_launcher_background"/>
+        android:src="@drawable/ic_launcher_background"
+        />
 
     <EditText
         android:id="@+id/etUsernameLogin"
@@ -20,8 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/ivLogoLogin"
         android:layout_marginTop="@dimen/distance_between_views"
-        android:layout_marginStart="@dimen/horizontal_edge_margin"
-        android:layout_marginEnd="@dimen/horizontal_edge_margin"
+        android:layout_marginHorizontal="@dimen/horizontal_edge_margin"
         android:inputType="text"
         android:autofillHints="false"
         android:hint="@string/username"/>
@@ -32,8 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/etUsernameLogin"
         android:layout_marginTop="@dimen/distance_between_views"
-        android:layout_marginStart="@dimen/horizontal_edge_margin"
-        android:layout_marginEnd="@dimen/horizontal_edge_margin"
+        android:layout_marginHorizontal="@dimen/horizontal_edge_margin"
         android:inputType="textPassword"
         android:autofillHints="false"
         android:hint="@string/password"/>
@@ -44,8 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/etPasswordLogin"
         android:layout_marginTop="@dimen/distance_between_views"
-        android:layout_marginStart="@dimen/horizontal_edge_margin"
-        android:layout_marginEnd="@dimen/horizontal_edge_margin"
+        android:layout_marginHorizontal="@dimen/horizontal_edge_margin"
         android:text="@string/login"/>
 
     <Button
@@ -54,8 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/btnLogin"
         android:layout_marginTop="@dimen/distance_between_views"
-        android:layout_marginStart="@dimen/horizontal_edge_margin"
-        android:layout_marginEnd="@dimen/horizontal_edge_margin"
+        android:layout_marginHorizontal="@dimen/horizontal_edge_margin"
         android:text="@string/signup"/>
 
 </RelativeLayout>

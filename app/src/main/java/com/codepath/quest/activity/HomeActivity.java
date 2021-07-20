@@ -1,7 +1,11 @@
 package com.codepath.quest.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ActionMenuItemView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -17,6 +21,9 @@ import com.codepath.quest.fragment.SearchFragment;
 import com.codepath.quest.fragment.SubjectsFragment;
 import com.codepath.quest.helper.Navigation;
 import com.codepath.quest.helper.QuestToast;
+import com.codepath.quest.model.Page;
+import com.codepath.quest.model.Question;
+import com.codepath.quest.model.Section;
 import com.codepath.quest.model.Subject;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -33,36 +40,50 @@ import java.util.zip.Inflater;
 public class HomeActivity extends AppCompatActivity {
     // Constants for the data models and fragments to use.
     public static final String KEY_PARENT = "parent";
+    public static final String KEY_SUBJECT = "Subject";
+    public static final String KEY_SECTION = "Section";
+    public static final String KEY_PAGE = "Page";
+    public static final String KEY_QUESTION = "Question";
     public static final String KEY_USER = "user";
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_DIALOG = "dialog";
     public static final String KEY_REQUEST = "request";
+    public static final String KEY_SUBTITLE = "subtitle";
+
 
     private Fragment currentFragment;
-    private final int FRAG_CONTAINER_ID = R.id.rlHome;
 
+    // Keeping track of the current category
+    // for child categories to access.
+    private static Subject currentSubject;
+    private static Section currentSection;
+    private static Page currentPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        final FragmentManager fragmentManager = getSupportFragmentManager();
+        Navigation.setFragmentManager(getSupportFragmentManager());
         final BottomNavigationView bnvHome = findViewById(R.id.bnvHome);
+
+        // Set up app bar.
+        Toolbar toolbar = findViewById(R.id.tbHome);
+        setSupportActionBar(toolbar);
 
         // Initialize the home activity to display the
         // recent questions fragment.
-        FragmentTransaction fragmentTransaction = fragmentManager
+        FragmentTransaction fragmentTransaction = Navigation.getFragmentManager()
                 .beginTransaction();
-        fragmentTransaction.replace(FRAG_CONTAINER_ID, new RecentQuestionsFragment())
+        fragmentTransaction.replace(R.id.quest_fragment_container, new RecentQuestionsFragment())
                 .commit();
 
         // Set up the listener for the bottom navigation bar.
         bnvHome.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
+            public boolean onNavigationItemSelected(@NotNull MenuItem item) {
                 // Select the fragment corresponding to the menu item clicked.
-                FragmentTransaction fragmentTransaction = fragmentManager
+                FragmentTransaction fragmentTransaction = Navigation.getFragmentManager()
                         .beginTransaction();
                 int selectedItemId = item.getItemId();
                 if (selectedItemId == R.id.actionHome) {
@@ -77,14 +98,12 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 // Link the fragments' XML layouts to the fragments in Java code and show
                 // the fragment.
-                fragmentTransaction.replace(FRAG_CONTAINER_ID, currentFragment)
+                fragmentTransaction.replace(R.id.quest_fragment_container, currentFragment)
                         .commit();
                 return true;
             }
         });
     }
-
-
 
     // Inflate menu resource to the action bar.
     @Override
@@ -106,7 +125,6 @@ public class HomeActivity extends AppCompatActivity {
         return true;
     }
 
-
     /**
      * Logs the user out from the Parse database and
      * navigates back to the login activity.
@@ -117,14 +135,50 @@ public class HomeActivity extends AppCompatActivity {
             public void done(ParseException e) {
                 if (e == null) {
                     // Success!
-                    QuestToast.xSuccessful(HomeActivity.this, "Logout");
+                    QuestToast.successful(HomeActivity.this, "Logout");
                 } else {
                     // Failure.
-                    QuestToast.xFailed(HomeActivity.this, "Logout");
+                    QuestToast.failed(HomeActivity.this, "Logout");
                 }
             }
         });
         Navigation.goToLoginActivity(HomeActivity.this);
         finish();
+    }
+
+    /**
+     * Sets the title and subtitle of the HomeActivity toolbar shared
+     * between all fragments.
+     *
+     * @param title the text to set the action bar title
+     * @param subtitle the text to set the action bar subtitle
+     */
+    public static void setActionBarText(ActionBar actionBar, String title, @Nullable String subtitle) {
+            actionBar.setTitle(title);
+            actionBar.setSubtitle(subtitle);
+    }
+
+    public static void setCurrentSubject(Subject subject) {
+        currentSubject = subject;
+    }
+
+    public static void setCurrentSection(Section section) {
+        currentSection = section;
+    }
+
+    public static void setCurrentPage(Page page) {
+        currentPage = page;
+    }
+
+    public static Subject getCurrentSubject() {
+        return currentSubject;
+    }
+
+    public static Section getCurrentSection() {
+        return currentSection;
+    }
+
+    public static Page getCurrentPage() {
+        return currentPage;
     }
 }

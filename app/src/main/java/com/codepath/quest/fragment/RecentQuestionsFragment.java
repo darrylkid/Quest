@@ -2,6 +2,11 @@ package com.codepath.quest.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -9,6 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.codepath.quest.R;
+import com.codepath.quest.activity.HomeActivity;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -63,4 +71,21 @@ public class RecentQuestionsFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_recent_questions, container, false);
     }
+
+    @Override
+    public void onViewCreated(@NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Set the action bar title.
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        HomeActivity.setActionBarText(actionBar, getString(R.string.home), "");
+
+        // Set the action bar's logout button to be visible.
+        ActionMenuItemView logoutIcon = getActivity().findViewById(R.id.iLogoutHome);
+        if (logoutIcon != null) {
+            logoutIcon.setVisibility(View.VISIBLE);
+        }
+
+    }
+
 }

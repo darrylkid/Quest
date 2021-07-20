@@ -85,7 +85,7 @@ public class AddCategoryDialogFragment extends DialogFragment {
 
                        // Error handling for invalid text.
                        if (subjectName.equals("")) {
-                           QuestToast.pleaseEnterX(getContext(), "subject");
+                           QuestToast.pleaseEnter(getContext(), "subject");
                            return;
                        }
 
@@ -95,7 +95,7 @@ public class AddCategoryDialogFragment extends DialogFragment {
                        getParentFragmentManager().setFragmentResult(HomeActivity.KEY_REQUEST, bundle);
 
                        // Success!
-                       QuestToast.xSuccessful(getContext(), "Create Button");
+                       QuestToast.successful(getContext(), "Create Button");
                    }
                })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

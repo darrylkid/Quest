@@ -8,8 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/distance_between_views"
-        android:layout_marginStart="@dimen/horizontal_edge_margin"
-        android:layout_marginEnd="@dimen/horizontal_edge_margin"
+        android:layout_marginHorizontal="@dimen/horizontal_edge_margin"
         android:inputType="text"
         android:hint="@string/enter_subject"
         android:imeOptions="actionDone" />

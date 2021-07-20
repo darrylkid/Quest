@@ -15,5 +15,5 @@
         android:id="@+id/actionSubjects"
         android:title="@string/subjects"
         android:icon="@drawable/subjects"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 </menu>
