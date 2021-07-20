@@ -8,6 +8,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,7 +22,9 @@ import com.codepath.quest.activity.HomeActivity;
 import com.codepath.quest.adapter.CategoryAdapter;
 import com.codepath.quest.model.Section;
 import com.codepath.quest.model.Subject;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -94,10 +98,35 @@ public class SectionsFragment extends Fragment {
             Section.querySections(sectionAdapter, parentSubject);
         }
 
-    }
+        // Set up an onclick listener for the
+        // "Add Section" floating action button
+        FloatingActionButton fabNewSection = view.findViewById(R.id.fabNewSection);
+        View.OnClickListener newSectionHandler = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show a "New Section" dialog.
+                AddCategoryDialogFragment fragment = AddCategoryDialogFragment.newInstance("Section");
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragment.show(fragmentManager,"Section");
 
-    private void setActionBarText(ActionBar actionBar, String title, @Nullable String subtitle) {
-        actionBar.setTitle(title);
-        actionBar.setSubtitle(subtitle);
+                // Gets invoked when the user presses the "Create" option inside
+                // the dialog and their input is valid.
+                FragmentResultListener onAddSectionDialogResult = new FragmentResultListener() {
+                    @Override
+                    public void onFragmentResult(@NotNull String requestKey, @NonNull Bundle result) {
+                        // When the user creates a new subject from the dialog,
+                        // add it to the recycler view for the subject to be displayed.
+                        String sectionName = result.getString(HomeActivity.KEY_DIALOG);
+                        Section section = new Section();
+                        section.save(sectionName, ParseUser.getCurrentUser(), parentSubject);
+                        sectionAdapter.add(section);
+                    }
+                };
+                fragmentManager.setFragmentResultListener(HomeActivity.KEY_REQUEST,
+                        SectionsFragment.this,
+                        onAddSectionDialogResult);
+            }
+        };
+        fabNewSection.setOnClickListener(newSectionHandler);
     }
 }

@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,7 +22,9 @@ import com.codepath.quest.adapter.CategoryAdapter;
 import com.codepath.quest.model.Page;
 import com.codepath.quest.model.Section;
 import com.codepath.quest.model.Subject;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -95,6 +99,37 @@ public class PagesFragment extends Fragment {
         if (pageAdapter.getCategoryList().size() == 0) {
             Page.queryPages(pageAdapter, parentSection);
         }
+
+        // Set up an onclick listener for the
+        // "Add Page" floating action button
+        FloatingActionButton fabNewPage = view.findViewById(R.id.fabNewPage);
+        View.OnClickListener newPageHandler = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show a "New Page" dialog.
+                AddCategoryDialogFragment fragment = AddCategoryDialogFragment.newInstance("Page");
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragment.show(fragmentManager,"Page");
+
+                // Gets invoked when the user presses the "Create" option inside
+                // the dialog and their input is valid.
+                FragmentResultListener onAddPageDialogResult = new FragmentResultListener() {
+                    @Override
+                    public void onFragmentResult(@NotNull String requestKey, @NonNull Bundle result) {
+                        // When the user creates a new subject from the dialog,
+                        // add it to the recycler view for the subject to be displayed.
+                        String pageName = result.getString(HomeActivity.KEY_DIALOG);
+                        Page page = new Page();
+                        page.save(pageName, ParseUser.getCurrentUser(), parentSection);
+                        pageAdapter.add(page);
+                    }
+                };
+                fragmentManager.setFragmentResultListener(HomeActivity.KEY_REQUEST,
+                        PagesFragment.this,
+                        onAddPageDialogResult);
+            }
+        };
+        fabNewPage.setOnClickListener(newPageHandler);
 
     }
 }

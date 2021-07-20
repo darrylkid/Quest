@@ -73,7 +73,7 @@ public class SearchFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // Set the action bar title.

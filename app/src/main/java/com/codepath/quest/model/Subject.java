@@ -22,6 +22,33 @@ public class Subject extends Category {
     // Empty constructor required for Parse.
     public Subject(){};
 
+
+    /**
+     * Crates a subject inside the Parse database.
+     *
+     * @param description the name to give the subject
+     * @param currentUser the user saving the subject
+     */
+    public void save(String description, ParseUser currentUser) {
+        // Set the attributes of this subject.
+        this.setDescription(description);
+        this.setUser(currentUser);
+
+
+        // Save the subject inside the database.
+        SaveCallback saveHandler = new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Log.i(HomeActivity.KEY_SUBJECT, "Category Creation Successful!");
+                } else {
+                    Log.e(HomeActivity.KEY_SUBJECT, "Category Creation Failed...", e);
+                }
+            }
+        };
+        this.saveInBackground(saveHandler);
+    }
+
     /**
      * Gets all the subjects under the current logged in user
      * and adds the subjects to the adapter.

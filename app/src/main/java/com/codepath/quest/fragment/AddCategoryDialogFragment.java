@@ -62,18 +62,30 @@ public class AddCategoryDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         // Create the builder that builds the "New Category" dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View dialogXML = LayoutInflater.from(getContext())
-                                       .inflate(R.layout.dialog_add_subject, null, false);
-
+        EditText etNewCategory = null;
+        View dialogXML = null;
+        if (categoryType.equals(HomeActivity.KEY_SUBJECT)) {
+            dialogXML = LayoutInflater.from(getContext())
+                    .inflate(R.layout.dialog_add_subject, null, false);
+            etNewCategory = dialogXML.findViewById(R.id.etAddSubject);
+        } else if (categoryType.equals(HomeActivity.KEY_SECTION)) {
+            dialogXML = LayoutInflater.from(getContext())
+                    .inflate(R.layout.dialog_add_section, null, false);
+            etNewCategory = dialogXML.findViewById(R.id.etAddSection);
+        } else if (categoryType.equals(HomeActivity.KEY_PAGE)) {
+            dialogXML = LayoutInflater.from(getContext())
+                    .inflate(R.layout.dialog_add_page, null, false);
+            etNewCategory = dialogXML.findViewById(R.id.etAddPage);
+        }
 
         // Focus the edit text view.
-        EditText etNewSubject = dialogXML.findViewById(R.id.etAddSubject);
-        etNewSubject.setFocusable(true);
-        etNewSubject.setFocusableInTouchMode(true);
-        etNewSubject.requestFocus();
+        etNewCategory.setFocusable(true);
+        etNewCategory.setFocusableInTouchMode(true);
+        etNewCategory.requestFocus();
 
         // TODO: Pop up the keyboard
 
+        EditText finalEtNewCategory = etNewCategory;
         // Characterize the builder.
         builder.setTitle("New " + this.categoryType)
                .setView(dialogXML)
@@ -81,21 +93,21 @@ public class AddCategoryDialogFragment extends DialogFragment {
                    @Override
                    public void onClick(DialogInterface dialog, int which) {
                        // Extract text from the edit text view inside the dialog.
-                       String subjectName = etNewSubject.getText().toString();
+                       String categoryName = finalEtNewCategory.getText().toString();
 
                        // Error handling for invalid text.
-                       if (subjectName.equals("")) {
-                           QuestToast.pleaseEnter(getContext(), "subject");
+                       if (categoryName.equals("")) {
+                           QuestToast.pleaseEnter(getContext(), categoryType);
                            return;
                        }
 
-                       // Pass the subject name to SubjectsFragment
+                       // Pass the subject name to ParentFragment.
                        Bundle bundle = new Bundle();
-                       bundle.putString(HomeActivity.KEY_DIALOG, subjectName);
+                       bundle.putString(HomeActivity.KEY_DIALOG, categoryName);
                        getParentFragmentManager().setFragmentResult(HomeActivity.KEY_REQUEST, bundle);
 
                        // Success!
-                       QuestToast.successful(getContext(), "Create Button");
+                       QuestToast.successful(getContext(), "Create " + categoryType);
                    }
                })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

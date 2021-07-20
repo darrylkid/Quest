@@ -13,12 +13,40 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.List;
 
 @ParseClassName("Section")
 public class Section extends Category {
     private static final String KEY_SECTION = "Section";
+
+    /**
+     * Crates a section inside the Parse database.
+     *
+     * @param description the name to give the subject
+     * @param currentUser the user saving the subject
+     * @param parentSubject the parent subject of this subject instance
+     */
+    public void save(String description, ParseUser currentUser, Subject parentSubject) {
+        // Set the attributes of this subject.
+        this.setDescription(description);
+        this.setUser(currentUser);
+        this.setParent(parentSubject);
+
+        // Save the subject inside the database.
+        SaveCallback saveHandler = new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Log.i(HomeActivity.KEY_SUBJECT, "Category Creation Successful!");
+                } else {
+                    Log.e(HomeActivity.KEY_SUBJECT, "Category Creation Failed...", e);
+                }
+            }
+        };
+        this.saveInBackground(saveHandler);
+    }
 
     public static void querySections(CategoryAdapter adapter, Subject parentSubject) {
         ParseQuery<Section> query = ParseQuery.getQuery(Section.class);
