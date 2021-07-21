@@ -20,8 +20,11 @@ import android.view.ViewGroup;
 import com.codepath.quest.R;
 import com.codepath.quest.activity.HomeActivity;
 import com.codepath.quest.adapter.CategoryAdapter;
+import com.codepath.quest.helper.OnSelectionClearListener;
+import com.codepath.quest.helper.SelectionClearer;
 import com.codepath.quest.model.Section;
 import com.codepath.quest.model.Subject;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -40,6 +43,7 @@ public class SectionsFragment extends Fragment {
     private RecyclerView rvSections;
     private CategoryAdapter sectionAdapter;
     private Subject parentSubject;
+    private SelectionClearer selectionClearer;
 
     // Required empty public constructor
     public SectionsFragment() {}
@@ -67,7 +71,8 @@ public class SectionsFragment extends Fragment {
 
         // Set up the adapter.
         List<ParseObject> sectionList = new ArrayList<>();
-        sectionAdapter = new CategoryAdapter(getContext(), sectionList);
+        selectionClearer = new SelectionClearer();
+        sectionAdapter = new CategoryAdapter(getContext(), sectionList, selectionClearer);
 
         // Let HomeActivity know that what the current subject is.
         HomeActivity.setCurrentSubject(parentSubject);
@@ -128,5 +133,19 @@ public class SectionsFragment extends Fragment {
             }
         };
         fabNewSection.setOnClickListener(newSectionHandler);
+
+        // Set up a onCleanSelection listener for visually clearing the views.
+        OnSelectionClearListener onSelectionClearListener = new OnSelectionClearListener() {
+            @Override
+            public void onSelectionClear(List<Integer> selectedItemPositions) {
+                for (Integer position: selectedItemPositions) {
+                    // For each selected view, visually clear its selection.
+                    View selectedView = rvSections.getLayoutManager().findViewByPosition(position);
+                    MaterialCardView mcvCategory = selectedView.findViewById(R.id.mcvCategory);
+                    mcvCategory.setStrokeWidth(0);
+                }
+            }
+        };
+        selectionClearer.setOnCleanSelectionListener(onSelectionClearListener);
     }
 }

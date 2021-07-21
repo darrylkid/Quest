@@ -1,6 +1,5 @@
 package com.codepath.quest.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,7 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.ActionMenuItemView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
@@ -16,16 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.codepath.quest.R;
 import com.codepath.quest.activity.HomeActivity;
 import com.codepath.quest.adapter.CategoryAdapter;
-import com.codepath.quest.helper.QuestToast;
+import com.codepath.quest.helper.OnSelectionClearListener;
+import com.codepath.quest.helper.SelectionClearer;
 import com.codepath.quest.model.Subject;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -40,6 +36,7 @@ import java.util.List;
 public class SubjectsFragment extends Fragment {
     private RecyclerView rvSubjects;
     private CategoryAdapter subjectAdapter;
+    private SelectionClearer selectionClearer;
 
     // Required empty public constructor
     public SubjectsFragment(){}
@@ -50,15 +47,16 @@ public class SubjectsFragment extends Fragment {
 
         // Set up the adapter.
         List<ParseObject> subjectList = new ArrayList<>();
-        subjectAdapter = new CategoryAdapter(getContext(), subjectList);
-
+        selectionClearer = new SelectionClearer();
+        subjectAdapter = new CategoryAdapter(getContext(), subjectList, selectionClearer);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_subjects, container, false);
+        View view = inflater.inflate(R.layout.fragment_subjects, container, false);
+        return view;
     }
 
     @Override
@@ -114,5 +112,21 @@ public class SubjectsFragment extends Fragment {
             }
         };
         fabNewSubject.setOnClickListener(newSubjectHandler);
+
+        // Set up a onCleanSelection listener for visually clearing the views.
+        OnSelectionClearListener onSelectionClearListener = new OnSelectionClearListener() {
+            @Override
+            public void onSelectionClear(List<Integer> selectedItemPositions) {
+                for (Integer position: selectedItemPositions) {
+                    // For each selected view, visually clear its selection.
+                    View selectedView = rvSubjects.getLayoutManager().findViewByPosition(position);
+                    MaterialCardView mcvCategory = selectedView.findViewById(R.id.mcvCategory);
+                    mcvCategory.setStrokeWidth(0);
+                }
+            }
+        };
+        selectionClearer.setOnCleanSelectionListener(onSelectionClearListener);
+
     }
+
 }

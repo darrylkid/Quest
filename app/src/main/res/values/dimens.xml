@@ -5,4 +5,5 @@
     <dimen name="distance_between_views">10dp</dimen>
     <dimen name="vertical_fab_margin">100dp</dimen>
     <dimen name="horizontal_fab_margin">30dp</dimen>
+    <dimen name="view_border_width">2dp</dimen>
 </resources>

@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -157,6 +158,8 @@ public class HomeActivity extends AppCompatActivity {
             actionBar.setTitle(title);
             actionBar.setSubtitle(subtitle);
     }
+
+   // public static void setAction
 
     public static void setCurrentSubject(Subject subject) {
         currentSubject = subject;
