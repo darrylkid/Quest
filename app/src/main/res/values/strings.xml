@@ -24,4 +24,6 @@
     <string name="new_page">NEW PAGE</string>
     <string name="enter_section">e.g. Unit 1: Introduction</string>
     <string name="enter_page">e.g. 1.1 Vector Equations</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 </resources>

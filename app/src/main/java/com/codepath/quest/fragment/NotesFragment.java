@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -71,14 +72,8 @@ public class NotesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Set the action bar title and subtitle.
-        String subjectDescription = HomeActivity.getCurrentSubject().getDescription();
-        String sectionDescription = HomeActivity.getCurrentSection().getDescription();
-        String pageDescription = parentPage.getDescription();
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-        HomeActivity.setActionBarText(actionBar
-                                     ,subjectDescription + " | " + sectionDescription
-                                     ,pageDescription );
+        // Set up the toolbar.
+        startNotesFragmentToolbar();
 
         // Set up recycler view.
         rvNotes = view.findViewById(R.id.rvNotes);
@@ -86,5 +81,22 @@ public class NotesFragment extends Fragment {
         rvNotes.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
+    public void startNotesFragmentToolbar() {
+        Toolbar toolbar = ((AppCompatActivity)getActivity()).findViewById(R.id.tbHome);
+        int currentToolbarColor = HomeActivity.getToolbarColor(toolbar);
+        toolbar.getMenu().clear();
 
+        // Set the action bar title and subtitle.
+        String subjectDescription = HomeActivity.getCurrentSubject().getDescription();
+        String sectionDescription = HomeActivity.getCurrentSection().getDescription();
+        String pageDescription = parentPage.getDescription();
+        HomeActivity.setToolbarText(toolbar
+                ,subjectDescription + " | " + sectionDescription
+                ,pageDescription );
+
+        // Animate the tool bar color.
+        HomeActivity.setToolbarColor(toolbar, currentToolbarColor
+                ,getResources().getColor(R.color.design_default_color_primary));
+    }
 }
+

@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.ActionMenuItemView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -64,12 +66,7 @@ public class SubjectsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Set the action bar title.
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-        HomeActivity.setActionBarText(actionBar, getString(R.string.subjects), "");
-
-        // Set logout icon to be invisible.
-        ActionMenuItemView logoutIcon = getActivity().findViewById(R.id.iLogoutHome);
-        logoutIcon.setVisibility(View.INVISIBLE);
+        startSubjectsFragmentToolbar();
 
         // Set up the recycler view.
         rvSubjects = view.findViewById(R.id.rvSubjects);
@@ -122,11 +119,21 @@ public class SubjectsFragment extends Fragment {
                     View selectedView = rvSubjects.getLayoutManager().findViewByPosition(position);
                     MaterialCardView mcvCategory = selectedView.findViewById(R.id.mcvCategory);
                     mcvCategory.setStrokeWidth(0);
+                    startSubjectsFragmentToolbar();
                 }
             }
         };
         selectionClearer.setOnCleanSelectionListener(onSelectionClearListener);
 
+    }
+
+    public void startSubjectsFragmentToolbar() {
+        Toolbar toolbar = ((AppCompatActivity)getActivity()).findViewById(R.id.tbHome);
+        int currentToolbarColor = HomeActivity.getToolbarColor(toolbar);
+        toolbar.getMenu().clear();
+        HomeActivity.setToolbarText(toolbar, getString(R.string.subjects), "");
+        HomeActivity.setToolbarColor(toolbar, currentToolbarColor
+                ,getResources().getColor(R.color.design_default_color_primary));
     }
 
 }

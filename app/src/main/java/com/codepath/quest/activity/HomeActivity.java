@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.animation.ValueAnimator;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -154,9 +156,28 @@ public class HomeActivity extends AppCompatActivity {
      * @param title the text to set the action bar title
      * @param subtitle the text to set the action bar subtitle
      */
-    public static void setActionBarText(ActionBar actionBar, String title, @Nullable String subtitle) {
-            actionBar.setTitle(title);
-            actionBar.setSubtitle(subtitle);
+    public static void setToolbarText(Toolbar toolbar, String title, @Nullable String subtitle) {
+            toolbar.setTitle(title);
+            toolbar.setSubtitle(subtitle);
+    }
+
+    /**
+     * Animates the color from one color to another.
+     */
+    public static void setToolbarColor(Toolbar toolbar, int colorStart, int ColorEnd) {
+        ValueAnimator animation = ValueAnimator.ofArgb(colorStart, ColorEnd);
+        animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                toolbar.setBackgroundColor((Integer) animation.getAnimatedValue());
+            }
+        });
+        animation.setDuration(250);
+        animation.start();
+    }
+
+    public static int getToolbarColor(Toolbar toolbar) {
+        return ((ColorDrawable) toolbar.getBackground()).getColor();
     }
 
    // public static void setAction

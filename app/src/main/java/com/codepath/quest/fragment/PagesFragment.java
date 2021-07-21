@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
@@ -89,10 +90,7 @@ public class PagesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Set the action bar title and subtitle.
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-        HomeActivity.setActionBarText(actionBar
-                       ,HomeActivity.getCurrentSubject().getDescription()
-                       ,parentSection.getDescription() );
+        startPagesFragmentToolbar();
 
         // Set up recycler view.
         rvPages = view.findViewById(R.id.rvPages);
@@ -144,10 +142,22 @@ public class PagesFragment extends Fragment {
                     View selectedView = rvPages.getLayoutManager().findViewByPosition(position);
                     MaterialCardView mcvCategory = selectedView.findViewById(R.id.mcvCategory);
                     mcvCategory.setStrokeWidth(0);
+                    startPagesFragmentToolbar();
                 }
             }
         };
         selectionClearer.setOnCleanSelectionListener(onSelectionClearListener);
+    }
 
+    public void startPagesFragmentToolbar() {
+        // Set the action bar title to the subject name.
+        Toolbar toolbar = ((AppCompatActivity)getActivity()).findViewById(R.id.tbHome);
+        int currentToolbarColor = HomeActivity.getToolbarColor(toolbar);
+        toolbar.getMenu().clear();
+        HomeActivity.setToolbarText(toolbar
+                ,HomeActivity.getCurrentSubject().getDescription()
+                ,parentSection.getDescription());
+        HomeActivity.setToolbarColor(toolbar, currentToolbarColor
+                ,getResources().getColor(R.color.design_default_color_primary));
     }
 }

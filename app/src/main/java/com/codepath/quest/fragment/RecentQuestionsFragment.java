@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.ActionMenuItemView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -76,9 +77,9 @@ public class RecentQuestionsFragment extends Fragment {
     public void onViewCreated(@NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Set the action bar title.
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-        HomeActivity.setActionBarText(actionBar, getString(R.string.home), "");
+        // Set the toolbar title.
+        Toolbar toolbar = ((AppCompatActivity)getActivity()).findViewById(R.id.tbHome);
+        HomeActivity.setToolbarText(toolbar, getString(R.string.home), "");
 
         // Set the action bar's logout button to be visible.
         ActionMenuItemView logoutIcon = getActivity().findViewById(R.id.iLogoutHome);

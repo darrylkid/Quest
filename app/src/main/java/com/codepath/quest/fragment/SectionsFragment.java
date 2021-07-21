@@ -1,5 +1,6 @@
 package com.codepath.quest.fragment;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,6 +8,7 @@ import androidx.annotation.Nullable;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
@@ -89,9 +91,8 @@ public class SectionsFragment extends Fragment {
     public void onViewCreated(@NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Set the action bar title to the subject name.
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-        HomeActivity.setActionBarText(actionBar, parentSubject.getDescription(), "");
+        // Set up the toolbar.
+        startSectionsFragmentToolbar();
 
         // Set up the recycler view.
         rvSections = view.findViewById(R.id.rvSections);
@@ -143,9 +144,19 @@ public class SectionsFragment extends Fragment {
                     View selectedView = rvSections.getLayoutManager().findViewByPosition(position);
                     MaterialCardView mcvCategory = selectedView.findViewById(R.id.mcvCategory);
                     mcvCategory.setStrokeWidth(0);
+                    startSectionsFragmentToolbar();
                 }
             }
         };
         selectionClearer.setOnCleanSelectionListener(onSelectionClearListener);
+    }
+
+    public void startSectionsFragmentToolbar() {
+        Toolbar toolbar = ((AppCompatActivity)getActivity()).findViewById(R.id.tbHome);
+        int currentToolbarColor = HomeActivity.getToolbarColor(toolbar);
+        toolbar.getMenu().clear();
+        HomeActivity.setToolbarText(toolbar, parentSubject.getDescription(), "");
+        HomeActivity.setToolbarColor(toolbar, currentToolbarColor
+                                    ,getResources().getColor(R.color.design_default_color_primary));
     }
 }

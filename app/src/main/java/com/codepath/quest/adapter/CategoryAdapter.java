@@ -1,18 +1,27 @@
 package com.codepath.quest.adapter;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.vectordrawable.graphics.drawable.AnimationUtilsCompat;
 
 import com.codepath.quest.R;
 import com.codepath.quest.activity.HomeActivity;
@@ -22,6 +31,9 @@ import com.codepath.quest.helper.SelectionClearer;
 import com.codepath.quest.model.Page;
 import com.codepath.quest.model.Section;
 import com.codepath.quest.model.Subject;
+import com.daimajia.androidanimations.library.BaseViewAnimator;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.material.card.MaterialCardView;
 import com.parse.Parse;
 import com.parse.ParseObject;
@@ -31,6 +43,8 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Inflates text views and binds category data (i.e. subject, section, and page).
@@ -207,7 +221,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                         exitSelection();
                     }
 
-                    // Set/Reset variables for selection
+
+
                     selectionModeOn = true;
                     startSelection();
 
@@ -230,9 +245,18 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
          * Visually indicate the view is selected.
          */
         private void startSelectionVisual() {
+            // Category view visual changes.
             Resources resources = context.getResources();
-            mcvCategory.setStrokeColor(resources.getColor(R.color.teal_200));
+            int newToolbarColor = resources.getColor(R.color.teal_200);
+            mcvCategory.setStrokeColor(newToolbarColor);
             mcvCategory.setStrokeWidth(resources.getInteger(R.integer.view_border_width));
+
+            // App bar visual changes.
+            Toolbar toolbar = ((HomeActivity)context).findViewById(R.id.tbHome);
+            toolbar.getMenu().clear();
+            toolbar.inflateMenu(R.menu.menu_category_long_press);
+            int currentColor = HomeActivity.getToolbarColor(toolbar);
+            HomeActivity.setToolbarColor(toolbar, currentColor, newToolbarColor);
         }
 
         private void exitSelection() {
