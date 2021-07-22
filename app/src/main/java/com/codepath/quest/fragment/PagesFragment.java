@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -20,8 +19,8 @@ import android.view.ViewGroup;
 import com.codepath.quest.R;
 import com.codepath.quest.activity.HomeActivity;
 import com.codepath.quest.adapter.CategoryAdapter;
-import com.codepath.quest.helper.OnSelectionClearListener;
-import com.codepath.quest.helper.SelectionClearer;
+import com.codepath.quest.helper.OnSelectionListener;
+import com.codepath.quest.helper.SelectionHandler;
 import com.codepath.quest.model.Page;
 import com.codepath.quest.model.Section;
 import com.google.android.material.card.MaterialCardView;
@@ -43,7 +42,7 @@ public class PagesFragment extends Fragment {
     private Section parentSection;
     private RecyclerView rvPages;
     private CategoryAdapter pageAdapter;
-    private SelectionClearer selectionClearer;
+    private SelectionHandler selectionHandler;
 
     // Required empty public constructor
     public PagesFragment() {}
@@ -71,8 +70,8 @@ public class PagesFragment extends Fragment {
 
         // Set up the adapter.
         List<ParseObject> pageList = new ArrayList<>();
-        selectionClearer = new SelectionClearer();
-        pageAdapter = new CategoryAdapter(getContext(), pageList, selectionClearer);
+        selectionHandler = new SelectionHandler();
+        pageAdapter = new CategoryAdapter(getContext(), pageList, selectionHandler);
 
         // Let HomeActivity know that what the current section is.
         HomeActivity.setCurrentSection(parentSection);
@@ -134,10 +133,10 @@ public class PagesFragment extends Fragment {
         fabNewPage.setOnClickListener(newPageHandler);
 
         // Set up a onCleanSelection listener for visually clearing the views.
-        OnSelectionClearListener onSelectionClearListener = new OnSelectionClearListener() {
+        OnSelectionListener onSelectionListener = new OnSelectionListener() {
             @Override
             public void onSelectionClear(List<Integer> selectedItemPositions) {
-                for (Integer position: selectedItemPositions) {
+                for (Integer position : selectedItemPositions) {
                     // For each selected view, visually clear its selection.
                     View selectedView = rvPages.getLayoutManager().findViewByPosition(position);
                     MaterialCardView mcvCategory = selectedView.findViewById(R.id.mcvCategory);
@@ -145,8 +144,14 @@ public class PagesFragment extends Fragment {
                     startPagesFragmentToolbar();
                 }
             }
+
+            @Override
+            public void onSelectionDelete(List<Integer> selectedItemPositions) {
+                HomeActivity.deleteSelectedItems(getContext()
+                                    , pageAdapter, selectedItemPositions);
+            }
         };
-        selectionClearer.setOnCleanSelectionListener(onSelectionClearListener);
+        selectionHandler.setOnSelectionListener(onSelectionListener);
     }
 
     public void startPagesFragmentToolbar() {

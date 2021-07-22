@@ -16,6 +16,19 @@ import com.parse.SaveCallback;
  * (i.e. Subject, Section and Page)
  */
 public class Category extends ParseObject {
+    private boolean deleteFlag = false;
+
+    // Deletion.
+    public void setDeleteFlag(boolean val) {
+        this.deleteFlag = val;
+    }
+
+    public boolean getDeleteFlag() {
+        return this.deleteFlag;
+    }
+
+    // Description.
+
     public String getDescription() {
         return this.getString(HomeActivity.KEY_DESCRIPTION);
     }
@@ -24,9 +37,13 @@ public class Category extends ParseObject {
         this.put(HomeActivity.KEY_DESCRIPTION, subjectName);
     }
 
+    // User.
+
     public void setUser(ParseUser currentUser) {
         this.put(HomeActivity.KEY_USER, currentUser);
     }
+
+    // Parent.
 
     public void setParent(Subject parentSubject) {
         this.put(HomeActivity.KEY_PARENT, parentSubject);
@@ -39,5 +56,4 @@ public class Category extends ParseObject {
     public void setParent(Page parentPage) {
         this.put(HomeActivity.KEY_PARENT, parentPage);
     }
-
 }

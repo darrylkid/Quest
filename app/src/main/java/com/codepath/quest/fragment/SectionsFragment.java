@@ -1,12 +1,10 @@
 package com.codepath.quest.fragment;
 
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -22,8 +20,8 @@ import android.view.ViewGroup;
 import com.codepath.quest.R;
 import com.codepath.quest.activity.HomeActivity;
 import com.codepath.quest.adapter.CategoryAdapter;
-import com.codepath.quest.helper.OnSelectionClearListener;
-import com.codepath.quest.helper.SelectionClearer;
+import com.codepath.quest.helper.OnSelectionListener;
+import com.codepath.quest.helper.SelectionHandler;
 import com.codepath.quest.model.Section;
 import com.codepath.quest.model.Subject;
 import com.google.android.material.card.MaterialCardView;
@@ -45,7 +43,8 @@ public class SectionsFragment extends Fragment {
     private RecyclerView rvSections;
     private CategoryAdapter sectionAdapter;
     private Subject parentSubject;
-    private SelectionClearer selectionClearer;
+    private SelectionHandler selectionHandler;
+    private FloatingActionButton fabNewSection;
 
     // Required empty public constructor
     public SectionsFragment() {}
@@ -73,8 +72,9 @@ public class SectionsFragment extends Fragment {
 
         // Set up the adapter.
         List<ParseObject> sectionList = new ArrayList<>();
-        selectionClearer = new SelectionClearer();
-        sectionAdapter = new CategoryAdapter(getContext(), sectionList, selectionClearer);
+        selectionHandler = new SelectionHandler();
+        sectionAdapter = new CategoryAdapter(getContext(), sectionList, selectionHandler);
+        fabNewSection = null;
 
         // Let HomeActivity know that what the current subject is.
         HomeActivity.setCurrentSubject(parentSubject);
@@ -106,7 +106,7 @@ public class SectionsFragment extends Fragment {
 
         // Set up an onclick listener for the
         // "Add Section" floating action button
-        FloatingActionButton fabNewSection = view.findViewById(R.id.fabNewSection);
+        fabNewSection = view.findViewById(R.id.fabNewSection);
         View.OnClickListener newSectionHandler = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,19 +136,28 @@ public class SectionsFragment extends Fragment {
         fabNewSection.setOnClickListener(newSectionHandler);
 
         // Set up a onCleanSelection listener for visually clearing the views.
-        OnSelectionClearListener onSelectionClearListener = new OnSelectionClearListener() {
+        OnSelectionListener onSelectionListener = new OnSelectionListener() {
             @Override
             public void onSelectionClear(List<Integer> selectedItemPositions) {
                 for (Integer position: selectedItemPositions) {
-                    // For each selected view, visually clear its selection.
+                    // For each selected view from the adapter,
+                    // visually clear its selection.
                     View selectedView = rvSections.getLayoutManager().findViewByPosition(position);
                     MaterialCardView mcvCategory = selectedView.findViewById(R.id.mcvCategory);
                     mcvCategory.setStrokeWidth(0);
                     startSectionsFragmentToolbar();
+                    fabNewSection.setVisibility(View.VISIBLE);
                 }
+
+            }
+
+            @Override
+            public void onSelectionDelete(List<Integer> selectedItemPositions) {
+                HomeActivity.deleteSelectedItems(getContext()
+                                        , sectionAdapter, selectedItemPositions);
             }
         };
-        selectionClearer.setOnCleanSelectionListener(onSelectionClearListener);
+        selectionHandler.setOnSelectionListener(onSelectionListener);
     }
 
     public void startSectionsFragmentToolbar() {
@@ -158,5 +167,9 @@ public class SectionsFragment extends Fragment {
         HomeActivity.setToolbarText(toolbar, parentSubject.getDescription(), "");
         HomeActivity.setToolbarColor(toolbar, currentToolbarColor
                                     ,getResources().getColor(R.color.design_default_color_primary));
+    }
+
+    public FloatingActionButton getFabFromFragment() {
+        return this.fabNewSection;
     }
 }

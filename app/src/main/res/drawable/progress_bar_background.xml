@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners android:radius="10dp"/>
+    <padding
+        android:bottom="@dimen/progress_bar_padding"
+        android:top="@dimen/progress_bar_padding"
+        android:right="@dimen/progress_bar_padding"
+        android:left="@dimen/progress_bar_padding"/>
+</shape>

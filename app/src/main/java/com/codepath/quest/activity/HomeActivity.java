@@ -9,19 +9,28 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.animation.ValueAnimator;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.codepath.quest.R;
+import com.codepath.quest.adapter.CategoryAdapter;
 import com.codepath.quest.fragment.RecentQuestionsFragment;
 import com.codepath.quest.fragment.SearchFragment;
 import com.codepath.quest.fragment.SubjectsFragment;
+import com.codepath.quest.helper.Category;
 import com.codepath.quest.helper.Navigation;
 import com.codepath.quest.helper.QuestToast;
 import com.codepath.quest.model.Page;
@@ -38,6 +47,8 @@ import com.parse.ParseUser;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.Inflater;
 
 public class HomeActivity extends AppCompatActivity {
@@ -178,6 +189,79 @@ public class HomeActivity extends AppCompatActivity {
 
     public static int getToolbarColor(Toolbar toolbar) {
         return ((ColorDrawable) toolbar.getBackground()).getColor();
+    }
+
+    public static void startProgressBar(Context context) {
+        RelativeLayout progressBarContainer = ((HomeActivity)context)
+                .findViewById(R.id.progress_bar_container);
+        progressBarContainer.setVisibility(View.VISIBLE);
+    }
+
+    public static void stopProgressBar(Context context) {
+        RelativeLayout progressBarContainer = ((HomeActivity)context)
+                .findViewById(R.id.progress_bar_container);
+        progressBarContainer.setVisibility(View.GONE);
+    }
+
+    public static void preventUserInteraction(Context context) {
+        ((HomeActivity) context).getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                , WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        );
+    }
+
+    public static void allowUserInteraction(Context context) {
+        ((HomeActivity) context).getWindow().clearFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        );
+    }
+
+    public static void deleteSelectedItems(Context context
+                                           , CategoryAdapter adapter
+                                           , List<Integer> selectedItemPositions) {
+        HomeActivity.startProgressBar(context);
+        // If we remove each item from the adapter, we will run
+        // into undefined behavior since the selectedItemPositions
+        // relies on the adapter to be static.
+        for (Integer itemPosition : selectedItemPositions) {
+            Category category = (Category)adapter.getCategory(itemPosition);
+            category.deleteInBackground();
+            category.setDeleteFlag(true);
+        }
+
+        // Remove the flagged categories.
+        List<ParseObject> newCategoryList = new ArrayList<>();
+        for (ParseObject category: adapter.getCategoryList()) {
+            if (!((Category) category).getDeleteFlag()) {
+                newCategoryList.add(category);
+            }
+        }
+        adapter.setCategoryList(newCategoryList);
+        HomeActivity.stopProgressBar(context);
+    }
+
+    public static MenuItem getDeleteMenuItem(Context context, int deleteMenuItemPosition) {
+        Toolbar toolbar = ((HomeActivity)context).findViewById(R.id.tbHome);
+        Menu currentMenu = toolbar.getMenu();
+        return currentMenu.getItem(deleteMenuItemPosition);
+    }
+
+    public static MenuItem getEditMenuItem(Context context, int editMenuItemPosition) {
+        Toolbar toolbar = ((HomeActivity)context).findViewById(R.id.tbHome);
+        Menu currentMenu = toolbar.getMenu();
+        return currentMenu.getItem(editMenuItemPosition);
+    }
+
+    public static void startCategoryOnClickMenuListeners(Context context
+                                                        , MenuItem.OnMenuItemClickListener editHandler
+                                                        , MenuItem.OnMenuItemClickListener deleteHandler) {
+        int editPosition = 0;
+        int deletePosition = 1;
+        MenuItem editMenuItem = HomeActivity.getEditMenuItem(context, editPosition);
+        MenuItem deleteMenuItem = HomeActivity.getDeleteMenuItem(context, deletePosition);
+
+        editMenuItem.setOnMenuItemClickListener(editHandler);
+        deleteMenuItem.setOnMenuItemClickListener(deleteHandler);
     }
 
    // public static void setAction

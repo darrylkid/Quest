@@ -15,6 +15,28 @@
         app:titleTextColor="@color/white"
         app:subtitleTextColor="@color/white"/>
 
+    <RelativeLayout
+        android:id="@+id/progress_bar_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/progress_bar_background"
+        android:visibility="gone">
+        <ProgressBar
+            android:id="@+id/pbHome"
+            android:layout_width="@dimen/progress_bar_width"
+            android:layout_height="@dimen/progress_bar_height"
+            android:backgroundTint="@color/design_default_color_primary"
+            android:indeterminate="true" />
+        <TextView
+            android:layout_width="@dimen/progress_bar_width"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_below="@id/pbHome"
+            android:text="@string/please_wait"/>
+    </RelativeLayout>
+
+
     <!-- Fragment Placeholder -->
 
     <RelativeLayout

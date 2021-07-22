@@ -1,12 +1,11 @@
 package com.codepath.quest.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -15,18 +14,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.codepath.quest.R;
 import com.codepath.quest.activity.HomeActivity;
 import com.codepath.quest.adapter.CategoryAdapter;
-import com.codepath.quest.helper.OnSelectionClearListener;
-import com.codepath.quest.helper.SelectionClearer;
+import com.codepath.quest.helper.Category;
+import com.codepath.quest.helper.OnSelectionListener;
+import com.codepath.quest.helper.SelectionHandler;
 import com.codepath.quest.model.Subject;
+import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -38,7 +39,7 @@ import java.util.List;
 public class SubjectsFragment extends Fragment {
     private RecyclerView rvSubjects;
     private CategoryAdapter subjectAdapter;
-    private SelectionClearer selectionClearer;
+    private SelectionHandler selectionHandler;
 
     // Required empty public constructor
     public SubjectsFragment(){}
@@ -49,8 +50,8 @@ public class SubjectsFragment extends Fragment {
 
         // Set up the adapter.
         List<ParseObject> subjectList = new ArrayList<>();
-        selectionClearer = new SelectionClearer();
-        subjectAdapter = new CategoryAdapter(getContext(), subjectList, selectionClearer);
+        selectionHandler = new SelectionHandler();
+        subjectAdapter = new CategoryAdapter(getContext(), subjectList, selectionHandler);
     }
 
     @Override
@@ -77,7 +78,6 @@ public class SubjectsFragment extends Fragment {
         if (subjectAdapter.getCategoryList().size() == 0) {
             Subject.querySubjects(subjectAdapter);
         }
-
 
         // Set up an onclick listener for the
         // "Add Subject" floating action button
@@ -111,7 +111,7 @@ public class SubjectsFragment extends Fragment {
         fabNewSubject.setOnClickListener(newSubjectHandler);
 
         // Set up a onCleanSelection listener for visually clearing the views.
-        OnSelectionClearListener onSelectionClearListener = new OnSelectionClearListener() {
+        OnSelectionListener onSelectionListener = new OnSelectionListener() {
             @Override
             public void onSelectionClear(List<Integer> selectedItemPositions) {
                 for (Integer position: selectedItemPositions) {
@@ -122,9 +122,14 @@ public class SubjectsFragment extends Fragment {
                     startSubjectsFragmentToolbar();
                 }
             }
-        };
-        selectionClearer.setOnCleanSelectionListener(onSelectionClearListener);
 
+            @Override
+            public void onSelectionDelete(List<Integer> selectedItemPositions) {
+                HomeActivity.deleteSelectedItems(getContext(), subjectAdapter
+                                                , selectedItemPositions);
+            }
+        };
+        selectionHandler.setOnSelectionListener(onSelectionListener);
     }
 
     public void startSubjectsFragmentToolbar() {
