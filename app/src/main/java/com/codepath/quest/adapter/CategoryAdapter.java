@@ -160,8 +160,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                     if (!selectionModeOn) {
                         Navigation.fromPagesToNotes(page);
                     } else {
-                        startSelection();
-
+                        if (!isPositionSelected(getLayoutPosition())) {
+                            startSelection();
+                        }
                         HomeActivity.startCategoryOnClickMenuListeners(
                                 context
                                 , createOnEditIconClickHandler()
@@ -179,7 +180,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                     if (!selectionModeOn) {
                         Navigation.fromSectionsToPages(section);
                     } else {
-                        startSelection();
+                        if (!isPositionSelected(getLayoutPosition())) {
+                            startSelection();
+                        }
                         HomeActivity.startCategoryOnClickMenuListeners(
                                 context
                                 , createOnEditIconClickHandler()
@@ -197,8 +200,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                     if (!selectionModeOn) {
                         Navigation.fromSubjectsToSections(subject);
                     } else {
-                        startSelection();
-
+                        if (!isPositionSelected(getLayoutPosition())) {
+                            startSelection();
+                        }
                         HomeActivity.startCategoryOnClickMenuListeners(
                                 context
                                 , createOnEditIconClickHandler()
@@ -212,17 +216,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         private View.OnLongClickListener createOnLongClickHandler() {
             return new View.OnLongClickListener() {
                 public boolean onLongClick(View v) {
-                    // Check to see if the long pressed position
-                    // is selected.
-                    boolean currentPosIsSelected = false;
-                    Integer currentPos = getLayoutPosition();
+                    boolean currentPosIsSelected = isPositionSelected(getLayoutPosition());
 
-                    for (Integer selectedPos: selectedCategoryPositions) {
-                        if (currentPos.equals(selectedPos)) {
-                            currentPosIsSelected = true;
-                            break;
-                        }
-                    }
                     if (selectionModeOn && currentPosIsSelected) {
                         // If the same view is long clicked twice,
                         // simply exit selection mode.
@@ -322,6 +317,22 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             selectionModeOn = false;
             selectionHandler.startSelectionClear(selectedCategoryPositions);
             selectedCategoryPositions.clear();
+        }
+
+        /**
+         * Check to see if the long pressed position
+         * is selected.
+         *
+         * @param currentPos the current position
+         * @return boolean indicating whether or not the position is selected
+         */
+        private boolean isPositionSelected(int currentPos) {
+            for (Integer selectedPos: selectedCategoryPositions) {
+                if (((Integer)currentPos).equals(selectedPos)) {
+                    return true;
+                }
+            }
+            return false;
         }
 
     }
