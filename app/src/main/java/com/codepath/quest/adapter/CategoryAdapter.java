@@ -2,6 +2,7 @@ package com.codepath.quest.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -102,6 +103,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     }
 
     public ParseObject getCategory(int position) {
+        debug();
         return this.categoryList.get(position);
     }
 
@@ -334,6 +336,19 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             }
             return false;
         }
+    }
 
+    public void debug() {
+        String selectedCategoryPositionString = "Selected category positions: ";
+        for (Integer p : selectedCategoryPositions) {
+            selectedCategoryPositionString += p.toString() + " | ";
+        }
+        String catergoyListString = "Category list that exists: ";
+        for (Integer i = 0; i < categoryList.size(); i++) {
+            catergoyListString += i.toString() + " | ";
+        }
+        Log.i("CategoryAdapter", selectedCategoryPositionString);
+        Log.i("CategoryAdapter", catergoyListString);
+        Log.i("CategoryAdapter", "--------------------------------------------------------------------------");
     }
 }
