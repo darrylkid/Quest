@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -134,8 +135,9 @@ public class SubjectsFragment extends Fragment {
 
     public void startSubjectsFragmentToolbar() {
         Toolbar toolbar = ((AppCompatActivity)getActivity()).findViewById(R.id.tbHome);
-        int currentToolbarColor = HomeActivity.getToolbarColor(toolbar);
         toolbar.getMenu().clear();
+        toolbar.inflateMenu(R.menu.menu_home_top_without_logout);
+        int currentToolbarColor = HomeActivity.getToolbarColor(toolbar);
         HomeActivity.setToolbarText(toolbar, getString(R.string.subjects), "");
         HomeActivity.setToolbarColor(toolbar, currentToolbarColor
                 ,getResources().getColor(R.color.design_default_color_primary));

@@ -164,12 +164,9 @@ public class SectionsFragment extends Fragment {
         Toolbar toolbar = ((AppCompatActivity)getActivity()).findViewById(R.id.tbHome);
         int currentToolbarColor = HomeActivity.getToolbarColor(toolbar);
         toolbar.getMenu().clear();
+        toolbar.inflateMenu(R.menu.menu_home_top_without_logout);
         HomeActivity.setToolbarText(toolbar, parentSubject.getDescription(), "");
         HomeActivity.setToolbarColor(toolbar, currentToolbarColor
                                     ,getResources().getColor(R.color.design_default_color_primary));
-    }
-
-    public FloatingActionButton getFabFromFragment() {
-        return this.fabNewSection;
     }
 }

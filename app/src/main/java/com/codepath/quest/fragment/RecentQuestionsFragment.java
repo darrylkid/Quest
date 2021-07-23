@@ -11,6 +11,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -79,12 +80,15 @@ public class RecentQuestionsFragment extends Fragment {
 
         // Set the toolbar title.
         Toolbar toolbar = ((AppCompatActivity)getActivity()).findViewById(R.id.tbHome);
+        toolbar.getMenu().clear();
+        toolbar.inflateMenu(R.menu.menu_home_top_with_logout);
         HomeActivity.setToolbarText(toolbar, getString(R.string.home), "");
 
+
         // Set the action bar's logout button to be visible.
-        ActionMenuItemView logoutIcon = getActivity().findViewById(R.id.iLogoutHome);
+        MenuItem logoutIcon = toolbar.getMenu().findItem(R.id.iLogoutHome);
         if (logoutIcon != null) {
-            logoutIcon.setVisibility(View.VISIBLE);
+            logoutIcon.setVisible(true);
         }
 
     }

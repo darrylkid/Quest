@@ -2,27 +2,19 @@ package com.codepath.quest.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.animation.ValueAnimator;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.codepath.quest.R;
@@ -34,7 +26,6 @@ import com.codepath.quest.helper.Category;
 import com.codepath.quest.helper.Navigation;
 import com.codepath.quest.helper.QuestToast;
 import com.codepath.quest.model.Page;
-import com.codepath.quest.model.Question;
 import com.codepath.quest.model.Section;
 import com.codepath.quest.model.Subject;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -42,14 +33,12 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 public class HomeActivity extends AppCompatActivity {
     // Constants for the data models and fragments to use.
@@ -122,7 +111,7 @@ public class HomeActivity extends AppCompatActivity {
     // Inflate menu resource to the action bar.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_home_top, menu);
+        getMenuInflater().inflate(R.menu.menu_home_top_with_logout, menu);
         return true;
     }
 
@@ -263,6 +252,11 @@ public class HomeActivity extends AppCompatActivity {
         editMenuItem.setOnMenuItemClickListener(editHandler);
         deleteMenuItem.setOnMenuItemClickListener(deleteHandler);
     }
+
+    /**
+     *
+     * @param subject
+     */
 
    // public static void setAction
 

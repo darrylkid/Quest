@@ -8,13 +8,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.codepath.quest.R;
 import com.codepath.quest.activity.HomeActivity;
+import com.codepath.quest.helper.Category;
 import com.codepath.quest.helper.Navigation;
 import com.codepath.quest.helper.QuestToast;
 import com.codepath.quest.helper.SelectionHandler;
@@ -103,7 +108,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     }
 
     public ParseObject getCategory(int position) {
-        debug();
         return this.categoryList.get(position);
     }
 
@@ -258,7 +262,43 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             return new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    QuestToast.successful(context, "Edit Icon Click");
+                    // Show the alert dialog..
+                    AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+                    RelativeLayout fragmentContainer = ((HomeActivity)context).findViewById(R.id.quest_fragment_container);
+                    View dialogRootView = ((HomeActivity)context)
+                                            .getLayoutInflater()
+                                            .inflate(R.layout.dialog_edit_category
+                                            , fragmentContainer, false);
+                    alertDialog.setView(dialogRootView);
+                    alertDialog.show();
+
+                    // Set up on click listener for the button.
+                    Button btnEditCategory = dialogRootView.findViewById(R.id.btnEditCategorySubmit);
+                    btnEditCategory.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // Error handling for invalid text input.
+                            EditText etCategory = dialogRootView.findViewById(R.id.etEditCategory);
+                            String newCategoryInput = etCategory.getText().toString();
+                            if(newCategoryInput.equals("")) {
+                                QuestToast.pleaseEnter(context, "new name");
+                            } else {
+                                // Valid user text! Change the description in the
+                                // database and notify the adapter a change has occured.
+                                int position = getLayoutPosition();
+                                ((Category)categoryList
+                                        .get(position))
+                                        .setDescription(newCategoryInput);
+                                notifyItemChanged(position);
+                                alertDialog.hide();
+                                exitSelection();
+                            }
+
+
+                        }
+                    });
+
+
                     return true;
                 }
             };

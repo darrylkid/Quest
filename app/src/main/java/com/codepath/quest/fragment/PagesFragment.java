@@ -159,6 +159,7 @@ public class PagesFragment extends Fragment {
         Toolbar toolbar = ((AppCompatActivity)getActivity()).findViewById(R.id.tbHome);
         int currentToolbarColor = HomeActivity.getToolbarColor(toolbar);
         toolbar.getMenu().clear();
+        toolbar.inflateMenu(R.menu.menu_home_top_without_logout);
         HomeActivity.setToolbarText(toolbar
                 ,HomeActivity.getCurrentSubject().getDescription()
                 ,parentSection.getDescription());

@@ -33,8 +33,9 @@ public class Category extends ParseObject {
         return this.getString(HomeActivity.KEY_DESCRIPTION);
     }
 
-    public void setDescription(String subjectName) {
-        this.put(HomeActivity.KEY_DESCRIPTION, subjectName);
+    public void setDescription(String newDescription) {
+        this.put(HomeActivity.KEY_DESCRIPTION, newDescription);
+        this.saveInBackground();
     }
 
     // User.
