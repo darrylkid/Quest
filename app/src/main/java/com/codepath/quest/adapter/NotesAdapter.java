@@ -1,9 +1,15 @@
 package com.codepath.quest.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,8 +20,12 @@ import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 
 import com.codepath.quest.R;
+import com.codepath.quest.activity.HomeActivity;
+import com.codepath.quest.helper.QuestToast;
 import com.codepath.quest.model.Question;
 import com.google.android.material.card.MaterialCardView;
+import com.pedromassango.doubleclick.DoubleClick;
+import com.pedromassango.doubleclick.DoubleClickListener;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -106,6 +116,18 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             String answerDescription = question.getAnswer().getDescription();
             tvAnswer.setText(answerDescription);
 
+            // Set up an on double click listener for the question card view to set
+            // up the text.
+            mcvQuestion.setOnClickListener(new DoubleClick(new DoubleClickListener() {
+                @Override
+                public void onSingleClick(View view) {}
+
+                @Override
+                public void onDoubleClick(View view) {
+                    startEditQuestionMode(question);
+                }
+            }));
+
             // Set an on click listener for the arrow.
             mcvArrow.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -144,6 +166,38 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             ivArrow.setImageResource(R.drawable.down_arrow);
             llQuestionOptions.setVisibility(View.GONE);
         }
+
+        public void startEditQuestionMode(Question question) {
+            // Get the question description and copy it to the
+            // edit text.
+            String questionDescription = tvQuestion.getText().toString();
+            tvQuestion.setVisibility(View.INVISIBLE);
+
+            EditText etQuestion = mcvQuestion.findViewById(R.id.etQuestion);
+            etQuestion.setVisibility(View.VISIBLE);
+            etQuestion.setText(questionDescription);
+            etQuestion.requestFocus();
+            etQuestion.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus == false) {
+                        stopEditQuestionMode(question, etQuestion);
+                    }
+                }
+            });
+        }
+
+        public void stopEditQuestionMode(Question question, EditText etQuestion) {
+            // Get the text from the edit text and put it back to the
+            // question text view.
+            String newQuestionDescription = etQuestion.getText().toString();
+            etQuestion.setVisibility(View.GONE);
+            tvQuestion.setVisibility(View.VISIBLE);
+            tvQuestion.setText(newQuestionDescription);
+            question.setDescription(newQuestionDescription);
+            question.saveInBackground();
+        }
+
     }
 
     /**
