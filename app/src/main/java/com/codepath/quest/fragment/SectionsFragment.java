@@ -22,6 +22,7 @@ import com.codepath.quest.activity.HomeActivity;
 import com.codepath.quest.adapter.CategoryAdapter;
 import com.codepath.quest.helper.OnSelectionListener;
 import com.codepath.quest.helper.SelectionHandler;
+import com.codepath.quest.model.Constants;
 import com.codepath.quest.model.Section;
 import com.codepath.quest.model.Subject;
 import com.google.android.material.card.MaterialCardView;
@@ -58,7 +59,7 @@ public class SectionsFragment extends Fragment {
     public static SectionsFragment newInstance(Subject subject) {
         SectionsFragment fragment = new SectionsFragment();
         Bundle args = new Bundle();
-        args.putParcelable(HomeActivity.KEY_SUBJECT, subject);
+        args.putParcelable(Constants.KEY_SUBJECT, subject);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,13 +68,14 @@ public class SectionsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            parentSubject = getArguments().getParcelable(HomeActivity.KEY_SUBJECT);
+            parentSubject = getArguments().getParcelable(Constants.KEY_SUBJECT);
         }
 
         // Set up the adapter.
         List<ParseObject> sectionList = new ArrayList<>();
         selectionHandler = new SelectionHandler();
         sectionAdapter = new CategoryAdapter(getContext(), sectionList, selectionHandler);
+        selectionHandler.setAdapter(sectionAdapter);
         fabNewSection = null;
 
         // Let HomeActivity know that what the current subject is.
@@ -122,13 +124,13 @@ public class SectionsFragment extends Fragment {
                     public void onFragmentResult(@NotNull String requestKey, @NonNull Bundle result) {
                         // When the user creates a new subject from the dialog,
                         // add it to the recycler view for the subject to be displayed.
-                        String sectionName = result.getString(HomeActivity.KEY_DIALOG);
+                        String sectionName = result.getString(Constants.KEY_DIALOG);
                         Section section = new Section();
                         section.save(sectionName, ParseUser.getCurrentUser(), parentSubject);
                         sectionAdapter.add(section);
                     }
                 };
-                fragmentManager.setFragmentResultListener(HomeActivity.KEY_REQUEST,
+                fragmentManager.setFragmentResultListener(Constants.KEY_REQUEST,
                         SectionsFragment.this,
                         onAddSectionDialogResult);
             }

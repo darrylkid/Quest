@@ -5,7 +5,8 @@
         android:id="@+id/itemCategoryEdit"
         android:title="@string/edit"
         android:icon="@drawable/edit"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"
+        app:itemTextColor="@color/white"/>
 
     <item
         android:id="@+id/itemCategoryDelete"

@@ -4,13 +4,12 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/etAddPage"
+        android:id="@+id/etAddCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/distance_between_views"
         android:layout_marginHorizontal="@dimen/horizontal_edge_margin"
         android:inputType="text"
-        android:hint="@string/enter_page"
         android:imeOptions="actionDone" />
 
 </RelativeLayout>

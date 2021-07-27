@@ -2,13 +2,10 @@ package com.codepath.quest.model;
 
 import android.util.Log;
 
-import com.codepath.quest.activity.HomeActivity;
 import com.codepath.quest.adapter.CategoryAdapter;
-import com.codepath.quest.helper.Category;
 import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -36,9 +33,9 @@ public class Page extends Category {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    Log.i(HomeActivity.KEY_SUBJECT, "Category Creation Successful!");
+                    Log.i(Constants.KEY_SUBJECT, "Category Creation Successful!");
                 } else {
-                    Log.e(HomeActivity.KEY_SUBJECT, "Category Creation Failed...", e);
+                    Log.e(Constants.KEY_SUBJECT, "Category Creation Failed...", e);
                 }
             }
         };
@@ -49,10 +46,10 @@ public class Page extends Category {
             ParseQuery<Page> query = ParseQuery.getQuery(Page.class);
 
             // Filter the query to find sections under the current user.
-            query.whereEqualTo(HomeActivity.KEY_USER, ParseUser.getCurrentUser());
+            query.whereEqualTo(Constants.KEY_USER, ParseUser.getCurrentUser());
 
             // Filter the query to find sections under the parent subject.
-            query.whereEqualTo(HomeActivity.KEY_PARENT, parentSection);
+            query.whereEqualTo(Constants.KEY_PARENT, parentSection);
 
             FindCallback<Page> findPagesCallBack = new FindCallback<Page>() {
                 @Override
@@ -62,7 +59,7 @@ public class Page extends Category {
                         adapter.addAll(objects);
                     } else {
                         // Failure in querying the subjects.
-                        Log.e(HomeActivity.KEY_PAGE, "Failed to query pages.", e);
+                        Log.e(Constants.KEY_PAGE, "Failed to query pages.", e);
                     }
                 }
             };

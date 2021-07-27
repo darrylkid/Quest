@@ -3,6 +3,7 @@
     <dimen name="horizontal_edge_margin">20dp</dimen>
     <dimen name="vertical_edge_margin">50dp</dimen>
     <dimen name="distance_between_views">10dp</dimen>
+    <dimen name="distance_between_question_views">2dp</dimen>
     <dimen name="vertical_fab_margin">100dp</dimen>
     <dimen name="horizontal_fab_margin">30dp</dimen>
     <dimen name="view_border_width">2dp</dimen>
@@ -10,6 +11,26 @@
     <dimen name="progress_bar_height">70dp</dimen>
     <dimen name="progress_bar_padding">10dp</dimen>
     <dimen name="horizontal_dialog_margin">100dp</dimen>
-    <dimen name="medium_text">24sp</dimen>
+    <dimen name="medium_text">18sp</dimen>
     <dimen name="vertical_dialog_margin">200dp</dimen>
+    <dimen name="question_width">300dp</dimen>
+    <dimen name="answer_width">300dp</dimen>
+    <dimen name="distance_between_QandA">20dp</dimen>
+    <dimen name="max_QAndA_height">220dp</dimen>
+    <dimen name="min_card_height">100dp</dimen>
+    <dimen name="cardview_padding">10dp</dimen>
+    <dimen name="cardview_elevation">5dp</dimen>
+    <dimen name="subject_height">80dp</dimen>
+    <dimen name="cardview_radius">0dp</dimen>
+    <dimen name="no_radius">0dp</dimen>
+    <dimen name="category_border_width">1dp</dimen>
+    <dimen name="no_width">-100dp</dimen>
+    <dimen name="button_radius">10dp</dimen>
+    <dimen name="button_padding">10dp</dimen>
+    <dimen name="question_padding">2dp</dimen>
+    <dimen name="cardview_icon_width">20dp</dimen>
+    <dimen name="cardview_icon_height">20dp</dimen>
+    <dimen name="cardview_icon_margin">5dp</dimen>
+    <dimen name="min_question_text_height">80dp</dimen>
+    <dimen name="min_text_inside_card_height">40dp</dimen>
 </resources>

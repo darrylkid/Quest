@@ -22,7 +22,7 @@ import com.codepath.quest.adapter.CategoryAdapter;
 import com.codepath.quest.fragment.RecentQuestionsFragment;
 import com.codepath.quest.fragment.SearchFragment;
 import com.codepath.quest.fragment.SubjectsFragment;
-import com.codepath.quest.helper.Category;
+import com.codepath.quest.model.Category;
 import com.codepath.quest.helper.Navigation;
 import com.codepath.quest.helper.QuestToast;
 import com.codepath.quest.model.Page;
@@ -41,17 +41,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
-    // Constants for the data models and fragments to use.
-    public static final String KEY_PARENT = "parent";
-    public static final String KEY_SUBJECT = "Subject";
-    public static final String KEY_SECTION = "Section";
-    public static final String KEY_PAGE = "Page";
-    public static final String KEY_QUESTION = "Question";
-    public static final String KEY_USER = "user";
-    public static final String KEY_DESCRIPTION = "description";
-    public static final String KEY_DIALOG = "dialog";
-    public static final String KEY_REQUEST = "request";
-    public static final String KEY_SUBTITLE = "subtitle";
 
 
     private Fragment currentFragment;
@@ -253,12 +242,7 @@ public class HomeActivity extends AppCompatActivity {
         deleteMenuItem.setOnMenuItemClickListener(deleteHandler);
     }
 
-    /**
-     *
-     * @param subject
-     */
 
-   // public static void setAction
 
     public static void setCurrentSubject(Subject subject) {
         currentSubject = subject;

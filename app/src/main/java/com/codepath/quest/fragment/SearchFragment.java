@@ -2,17 +2,11 @@ package com.codepath.quest.fragment;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -78,13 +72,11 @@ public class SearchFragment extends Fragment {
     @Override
     public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        
+
         // Set the tool bar title and color.
         Toolbar toolbar = ((HomeActivity)getContext()).findViewById(R.id.tbHome);
         toolbar.getMenu().clear();
         toolbar.inflateMenu(R.menu.menu_home_top_with_logout);
         HomeActivity.setToolbarText(toolbar, getString(R.string.search),"");
-
-
     }
 }

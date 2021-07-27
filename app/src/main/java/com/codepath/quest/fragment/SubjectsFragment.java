@@ -1,6 +1,5 @@
 package com.codepath.quest.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,21 +13,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.codepath.quest.R;
 import com.codepath.quest.activity.HomeActivity;
 import com.codepath.quest.adapter.CategoryAdapter;
-import com.codepath.quest.helper.Category;
 import com.codepath.quest.helper.OnSelectionListener;
 import com.codepath.quest.helper.SelectionHandler;
+import com.codepath.quest.model.Constants;
 import com.codepath.quest.model.Subject;
-import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -53,6 +49,7 @@ public class SubjectsFragment extends Fragment {
         List<ParseObject> subjectList = new ArrayList<>();
         selectionHandler = new SelectionHandler();
         subjectAdapter = new CategoryAdapter(getContext(), subjectList, selectionHandler);
+        selectionHandler.setAdapter(subjectAdapter);
     }
 
     @Override
@@ -98,13 +95,13 @@ public class SubjectsFragment extends Fragment {
                     public void onFragmentResult(@NotNull String requestKey, @NonNull Bundle result) {
                         // When the user creates a new subject from the dialog,
                         // add it to the recycler view for the subject to be displayed.
-                        String subjectName = result.getString(HomeActivity.KEY_DIALOG);
+                        String subjectName = result.getString(Constants.KEY_DIALOG);
                         Subject subject = new Subject();
                         subject.save(subjectName, ParseUser.getCurrentUser());
                         subjectAdapter.add(subject);
                     }
                 };
-                fragmentManager.setFragmentResultListener(HomeActivity.KEY_REQUEST,
+                fragmentManager.setFragmentResultListener(Constants.KEY_REQUEST,
                                              SubjectsFragment.this,
                                                           onAddSubjectDialogResult);
             }

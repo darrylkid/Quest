@@ -2,10 +2,7 @@ package com.codepath.quest.helper;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -16,11 +13,9 @@ import com.codepath.quest.activity.SignupActivity;
 import com.codepath.quest.fragment.NotesFragment;
 import com.codepath.quest.fragment.PagesFragment;
 import com.codepath.quest.fragment.SectionsFragment;
-import com.codepath.quest.fragment.SubjectsFragment;
 import com.codepath.quest.model.Page;
 import com.codepath.quest.model.Section;
 import com.codepath.quest.model.Subject;
-import com.parse.ParseObject;
 
 
 /**

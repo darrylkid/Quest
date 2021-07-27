@@ -6,5 +6,7 @@
         android:id="@+id/miBackSignup"
         android:icon="@drawable/back"
         android:title="@string/back"
-        app:showAsAction="always"/>
+        app:showAsAction="always"
+        app:itemTextColor="@color/white"
+        />
 </menu>

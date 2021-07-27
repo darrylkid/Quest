@@ -21,6 +21,7 @@ import com.codepath.quest.activity.HomeActivity;
 import com.codepath.quest.adapter.CategoryAdapter;
 import com.codepath.quest.helper.OnSelectionListener;
 import com.codepath.quest.helper.SelectionHandler;
+import com.codepath.quest.model.Constants;
 import com.codepath.quest.model.Page;
 import com.codepath.quest.model.Section;
 import com.google.android.material.card.MaterialCardView;
@@ -56,7 +57,7 @@ public class PagesFragment extends Fragment {
     public static PagesFragment newInstance(Section parentSection) {
         PagesFragment fragment = new PagesFragment();
         Bundle args = new Bundle();
-        args.putParcelable(HomeActivity.KEY_PARENT, parentSection);
+        args.putParcelable(Constants.KEY_PARENT, parentSection);
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,13 +66,14 @@ public class PagesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            parentSection = getArguments().getParcelable(HomeActivity.KEY_PARENT);
+            parentSection = getArguments().getParcelable(Constants.KEY_PARENT);
         }
 
         // Set up the adapter.
         List<ParseObject> pageList = new ArrayList<>();
         selectionHandler = new SelectionHandler();
         pageAdapter = new CategoryAdapter(getContext(), pageList, selectionHandler);
+        selectionHandler.setAdapter(pageAdapter);
 
         // Let HomeActivity know that what the current section is.
         HomeActivity.setCurrentSection(parentSection);
@@ -119,13 +121,13 @@ public class PagesFragment extends Fragment {
                     public void onFragmentResult(@NotNull String requestKey, @NonNull Bundle result) {
                         // When the user creates a new subject from the dialog,
                         // add it to the recycler view for the subject to be displayed.
-                        String pageName = result.getString(HomeActivity.KEY_DIALOG);
+                        String pageName = result.getString(Constants.KEY_DIALOG);
                         Page page = new Page();
                         page.save(pageName, ParseUser.getCurrentUser(), parentSection);
                         pageAdapter.add(page);
                     }
                 };
-                fragmentManager.setFragmentResultListener(HomeActivity.KEY_REQUEST,
+                fragmentManager.setFragmentResultListener(Constants.KEY_REQUEST,
                         PagesFragment.this,
                         onAddPageDialogResult);
             }

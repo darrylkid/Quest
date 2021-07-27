@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/hsvQAndAItem"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:maxHeight="@dimen/max_QAndA_height"
+    app:layout_constraintHeight_max="@dimen/max_QAndA_height"
+    android:scrollbars="none">
+
+    <RelativeLayout
+        android:id="@+id/rlQAndA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/distance_between_question_views">
+
+        <!-- Question -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mcvQuestion"
+            android:layout_width="@dimen/question_width"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/horizontal_edge_margin"
+            android:minHeight="@dimen/min_card_height"
+            app:cardElevation="@dimen/cardview_elevation"
+            app:cardUseCompatPadding="true"
+            android:clickable="true"
+            android:focusable="true">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <!-- Question Text -->
+                <TextView
+                    android:id="@+id/tvQuestion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/min_text_inside_card_height"
+                    android:textColor="@color/design_default_color_primary"
+                    android:textSize="@dimen/medium_text"
+                    android:layout_margin="@dimen/cardview_padding"/>
+
+                <!-- CardView Container: allows the arrow to be clickable-->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/mcvArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@id/tvQuestion"
+                    android:layout_marginHorizontal="@dimen/cardview_icon_margin"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@color/white">
+
+                    <!-- Arrow for uncollapsing and collapsing the items -->
+                    <ImageView
+                        android:id="@+id/ivArrow"
+                        android:layout_width="@dimen/cardview_icon_width"
+                        android:layout_height="@dimen/cardview_icon_height"
+                        android:src="@drawable/down_arrow"
+                        android:contentDescription="@string/collapsable" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Collapsable part of the CardView -->
+                <LinearLayout
+                    android:id="@+id/llQuestionOptions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@id/mcvArrow"
+                    android:visibility="gone">
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/mcvDelete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:clickable="true">
+                        <ImageView
+                            android:id="@+id/ivDelete"
+                            android:layout_width="@dimen/cardview_icon_width"
+                            android:layout_height="@dimen/cardview_icon_height"
+                            android:contentDescription="@string/delete"
+                            android:layout_gravity="bottom|end"
+                            android:src="@drawable/delete"
+                            android:layout_margin="@dimen/cardview_icon_margin"/>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Answer -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mcvAnswer"
+            android:layout_width="@dimen/question_width"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/min_card_height"
+            android:layout_marginStart="@dimen/horizontal_edge_margin"
+            android:layout_marginEnd="@dimen/distance_between_QandA"
+            app:cardElevation="@dimen/cardview_elevation"
+            app:cardUseCompatPadding="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:layout_toEndOf="@id/mcvQuestion">
+            <TextView
+                android:id="@+id/tvAnswer"
+                android:background="@null"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/cardview_padding"
+                android:textColor="@color/black"/>
+        </com.google.android.material.card.MaterialCardView>
+    </RelativeLayout>
+
+</HorizontalScrollView>

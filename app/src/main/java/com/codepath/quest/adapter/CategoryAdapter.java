@@ -1,34 +1,21 @@
 package com.codepath.quest.adapter;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
+
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.codepath.quest.R;
-import com.codepath.quest.activity.HomeActivity;
-import com.codepath.quest.helper.Category;
-import com.codepath.quest.helper.Navigation;
-import com.codepath.quest.helper.QuestToast;
 import com.codepath.quest.helper.SelectionHandler;
 import com.codepath.quest.model.Page;
 import com.codepath.quest.model.Section;
 import com.codepath.quest.model.Subject;
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.parse.Parse;
 import com.parse.ParseObject;
 
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +34,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     // Variables used for selection logic.
     private boolean selectionModeOn;
     private List<Integer> selectedCategoryPositions;
-    private int numberOfOnClickMenuItemListeners;
 
     public CategoryAdapter(Context context, List<ParseObject> categoryList
                           , SelectionHandler selectionHandler) {
@@ -56,7 +42,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         this.selectionHandler = selectionHandler;
         this.selectionModeOn = false;
         this.selectedCategoryPositions = new ArrayList<>();
-        numberOfOnClickMenuItemListeners = 0;
     }
 
     public List<ParseObject> getCategoryList() {
@@ -107,6 +92,22 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         this.categoryList.remove(category);
     }
 
+    public boolean isSelectionModeOn() {
+        return this.selectionModeOn;
+    }
+
+    public void setSelectionMode(boolean on) {
+        this.selectionModeOn = on;
+    }
+
+    public Context getAdapterContext() {
+        return this.context;
+    }
+
+    public List<Integer> getSelectedCategoryPositions() {
+        return this.selectedCategoryPositions;
+    }
+
     public ParseObject getCategory(int position) {
         return this.categoryList.get(position);
     }
@@ -130,7 +131,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 tvCategory.setText(page.getDescription());
 
                 // Set up an onclick listener for each unique page view.
-                View.OnClickListener pageClickHandler = createPageOnClickHandler(page);
+                View.OnClickListener pageClickHandler
+                        = selectionHandler.createPageOnClickHandler(page, getLayoutPosition(), mcvCategory);
                 mcvCategory.setOnClickListener(pageClickHandler);
 
             } else if (category instanceof Section) {
@@ -139,7 +141,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 tvCategory.setText(section.getDescription());
 
                 // Set up an onclick listener for each unique section view.
-                View.OnClickListener sectionClickHandler = createSectionOnClickHandler(section);
+                View.OnClickListener sectionClickHandler
+                        = selectionHandler.createSectionOnClickHandler(section, getLayoutPosition(), mcvCategory);
                 mcvCategory.setOnClickListener(sectionClickHandler);
 
             } else if (category instanceof Subject) {
@@ -148,235 +151,21 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 tvCategory.setText(subject.getDescription());
 
                 // Set up an onclick listener for each unique subject view.
-                View.OnClickListener subjectClickHandler = createSubjectOnClickHandler(subject);
+                View.OnClickListener subjectClickHandler
+                        = selectionHandler.createSubjectOnClickHandler(subject, getLayoutPosition(), mcvCategory);
                 mcvCategory.setOnClickListener(subjectClickHandler);
             }
 
             // Set up an on long click listener for each unique view.
-            View.OnLongClickListener subjectOnLongClickHandler = createOnLongClickHandler();
-            mcvCategory.setOnLongClickListener(subjectOnLongClickHandler);
+            View.OnLongClickListener subjectOnLongClickSelectionHandler
+                    = selectionHandler.createOnLongClickSelectionHandler(getLayoutPosition(), mcvCategory);
+            mcvCategory.setOnLongClickListener(subjectOnLongClickSelectionHandler);
         }
 
         /** OnClick and OnLongClick definitions. **/
-
-        private View.OnClickListener createPageOnClickHandler(Page page) {
-            return new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!selectionModeOn) {
-                        Navigation.fromPagesToNotes(page);
-                    } else {
-                        if (!isPositionSelected(getLayoutPosition())) {
-                            startSelection();
-                        }
-                        HomeActivity.startCategoryOnClickMenuListeners(
-                                context
-                                , createOnEditIconClickHandler()
-                                , createOnDeleteIconClickHandler()
-                        );
-                    }
-                }
-            };
-        }
-
-        private View.OnClickListener createSectionOnClickHandler(Section section) {
-            return new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!selectionModeOn) {
-                        Navigation.fromSectionsToPages(section);
-                    } else {
-                        if (!isPositionSelected(getLayoutPosition())) {
-                            startSelection();
-                        }
-                        HomeActivity.startCategoryOnClickMenuListeners(
-                                context
-                                , createOnEditIconClickHandler()
-                                , createOnDeleteIconClickHandler()
-                        );
-                    }
-                }
-            };
-        }
-
-        private View.OnClickListener createSubjectOnClickHandler(Subject subject) {
-            return new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!selectionModeOn) {
-                        Navigation.fromSubjectsToSections(subject);
-                    } else {
-                        if (!isPositionSelected(getLayoutPosition())) {
-                            startSelection();
-                        }
-                        HomeActivity.startCategoryOnClickMenuListeners(
-                                context
-                                , createOnEditIconClickHandler()
-                                , createOnDeleteIconClickHandler()
-                        );
-                    }
-                }
-            };
-        }
-
-        private View.OnLongClickListener createOnLongClickHandler() {
-            return new View.OnLongClickListener() {
-                public boolean onLongClick(View v) {
-                    boolean currentPosIsSelected = isPositionSelected(getLayoutPosition());
-
-                    if (selectionModeOn && currentPosIsSelected) {
-                        // If the same view is long clicked twice,
-                        // simply exit selection mode.
-                        exitSelection();
-                        return true;
-                    } else if (selectionModeOn) {
-                        // If a view has been long clicked already
-                        // and a new view has been long clicked,
-                        // reset the selection process.
-                        exitSelection();
-                    }
-
-                    // Long click for the first time.
-
-                    selectionModeOn = true;
-                    startSelection();
-
-                    // Because we are setting the on menu item click
-                    // listener fragment-wide, we wish to spawn one
-                    // listener per fragment. Without this condition,
-                    // the user can spawn an arbritary amount of instances
-                    // of the same listener in one fragment, which results in
-                    // undefined behavior.
-                    HomeActivity.startCategoryOnClickMenuListeners(
-                            context
-                            , createOnEditIconClickHandler()
-                            , createOnDeleteIconClickHandler()
-                    );
-                    numberOfOnClickMenuItemListeners++;
-                    return true;
-                }
-            };
-        }
-
-        public MenuItem.OnMenuItemClickListener createOnEditIconClickHandler() {
-            return new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    // Show the alert dialog..
-                    AlertDialog alertDialog = new AlertDialog.Builder(context).create();
-                    RelativeLayout fragmentContainer = ((HomeActivity)context).findViewById(R.id.quest_fragment_container);
-                    View dialogRootView = ((HomeActivity)context)
-                                            .getLayoutInflater()
-                                            .inflate(R.layout.dialog_edit_category
-                                            , fragmentContainer, false);
-                    alertDialog.setView(dialogRootView);
-                    alertDialog.show();
-
-                    // Set up on click listener for the button.
-                    Button btnEditCategory = dialogRootView.findViewById(R.id.btnEditCategorySubmit);
-                    btnEditCategory.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            // Error handling for invalid text input.
-                            EditText etCategory = dialogRootView.findViewById(R.id.etEditCategory);
-                            String newCategoryInput = etCategory.getText().toString();
-                            if(newCategoryInput.equals("")) {
-                                QuestToast.pleaseEnter(context, "new name");
-                            } else {
-                                // Valid user text! Change the description in the
-                                // database and notify the adapter a change has occured.
-                                int position = getLayoutPosition();
-                                ((Category)categoryList
-                                        .get(position))
-                                        .setDescription(newCategoryInput);
-                                notifyItemChanged(position);
-                                alertDialog.hide();
-                                exitSelection();
-                            }
-
-
-                        }
-                    });
-
-
-                    return true;
-                }
-            };
-        }
-
-        public MenuItem.OnMenuItemClickListener createOnDeleteIconClickHandler() {
-            return new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    selectionHandler.startSelectionDelete(selectedCategoryPositions);
-                    numberOfOnClickMenuItemListeners = 0;
-                    exitSelection();
-                    return true;
-                }
-            };
-        }
-
-        /**
-         * Select a view by adding it to the list of
-         * selected categories and visually indicating.
-         */
-        private void startSelection() {
-            selectedCategoryPositions.add(getLayoutPosition());
-            startSelectionVisual();
-        }
-
-        /**
-         * Visually indicate the view is selected.
-         */
-        private void startSelectionVisual() {
-            // Category view visual changes.
-            Resources resources = context.getResources();
-            int newToolbarColor = resources.getColor(R.color.teal_200);
-            mcvCategory.setStrokeColor(newToolbarColor);
-            mcvCategory.setStrokeWidth(resources.getInteger(R.integer.view_border_width));
-            startSelectionToolbar(newToolbarColor);
-
-        }
-
-        /**
-         * Start app bar visual selection mode.
-         */
-        private void startSelectionToolbar(int newToolbarColor) {
-            Toolbar toolbar = ((HomeActivity)context).findViewById(R.id.tbHome);
-            toolbar.getMenu().clear();
-            toolbar.inflateMenu(R.menu.menu_category_long_press);
-
-            if (selectedCategoryPositions.size() > 1) {
-                MenuItem editMenuItem = toolbar.getMenu().getItem(0);
-                editMenuItem.setVisible(false);
-            }
-
-            int currentColor = HomeActivity.getToolbarColor(toolbar);
-            HomeActivity.setToolbarColor(toolbar, currentColor, newToolbarColor);
-        }
-
-        private void exitSelection() {
-            selectionModeOn = false;
-            selectionHandler.startSelectionClear(selectedCategoryPositions);
-            selectedCategoryPositions.clear();
-        }
-
-        /**
-         * Check to see if the long pressed position
-         * is selected.
-         *
-         * @param currentPos the current position
-         * @return boolean indicating whether or not the position is selected
-         */
-        private boolean isPositionSelected(int currentPos) {
-            for (Integer selectedPos: selectedCategoryPositions) {
-                if (((Integer)currentPos).equals(selectedPos)) {
-                    return true;
-                }
-            }
-            return false;
-        }
     }
+
+
 
     public void debug() {
         String selectedCategoryPositionString = "Selected category positions: ";

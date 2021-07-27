@@ -1,4 +1,4 @@
-package com.codepath.quest;
+package com.codepath.quest.helper;
 
 import android.app.Application;
 
@@ -9,7 +9,6 @@ import com.codepath.quest.model.Section;
 import com.codepath.quest.model.Subject;
 import com.parse.Parse;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;

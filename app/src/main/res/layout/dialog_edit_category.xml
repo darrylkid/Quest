@@ -14,7 +14,7 @@
         android:layout_alignParentStart="true"
         android:text="@string/edit"
         android:textStyle="bold"
-        android:textSize="@dimen/medium_text"/>
+        android:textSize="@dimen/medium_text" />
 
     <EditText
         android:id="@+id/etEditCategory"

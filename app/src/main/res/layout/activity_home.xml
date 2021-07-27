@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tbHome"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/Theme.Quest"
-        app:popupTheme="@style/Theme.Quest"
-        app:titleTextColor="@color/white"
-        app:subtitleTextColor="@color/white"/>
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tbHome"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/Theme.Quest"
+            app:popupTheme="@style/Theme.Quest"
+            app:titleTextColor="@color/white"
+            app:subtitleTextColor="@color/white"
+            app:itemTextColor="@color/white"
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed"/>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
         android:id="@+id/progress_bar_container"
@@ -43,7 +52,8 @@
         android:id="@+id/quest_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tbHome"/>
+        android:layout_below="@id/tbHome"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <!-- Bottom Navigation Bar -->
 
@@ -51,7 +61,8 @@
         android:id="@+id/bnvHome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/menu_home_bottom"/>
+        android:layout_gravity="bottom"
+        app:menu="@menu/menu_home_bottom"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
 
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

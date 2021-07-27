@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Question Edit Text Area -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mcvAddQ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/min_card_height"
+        app:cardElevation="@dimen/cardview_elevation"
+        app:cardUseCompatPadding="true"
+        android:focusable="true"
+        android:clickable="true">
+        <EditText
+            android:id="@+id/etAddQ"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="@dimen/question_width"
+            android:minHeight="@dimen/min_card_height"
+            android:textColor="@color/design_default_color_primary"
+            android:textSize="@dimen/medium_text"
+            android:layout_marginHorizontal="@dimen/cardview_padding"
+            android:layout_marginVertical="@dimen/question_padding"
+            android:background="@null"
+            android:inputType="textMultiLine"
+            android:layout_gravity="start|top"
+            android:hint="@string/add_question"
+            android:minLines="@integer/min_lines"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Answer Edit Text Area -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mcvAddAns"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mcvAddQ"
+        android:minHeight="@dimen/min_card_height"
+        app:cardElevation="@dimen/cardview_elevation"
+        app:cardUseCompatPadding="true"
+        android:focusable="true"
+        android:clickable="true">
+        <EditText
+            android:id="@+id/etAddAns"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="@dimen/question_width"
+            android:minHeight="@dimen/min_card_height"
+            android:textColor="@color/design_default_color_primary"
+            android:textSize="@dimen/medium_text"
+            android:layout_marginHorizontal="@dimen/cardview_padding"
+            android:layout_marginVertical="@dimen/question_padding"
+            android:background="@null"
+            android:inputType="textMultiLine"
+            android:minLines="@integer/min_lines"
+            android:hint="@string/add_answer"/>
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <Button
+        android:id="@+id/btnSubmitQAndA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/mcvAddAns"
+        android:layout_below="@id/mcvAddAns"
+        android:text="@string/submit"/>
+
+
+
+</RelativeLayout>

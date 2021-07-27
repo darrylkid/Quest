@@ -46,4 +46,7 @@ dependencies {
     // Parse Library
     implementation 'com.github.parse-community.Parse-SDK-Android:parse:1.25.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0' // for logging API calls to LogCat
+
+    // Scroll Toolbar.
+    implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
 }
