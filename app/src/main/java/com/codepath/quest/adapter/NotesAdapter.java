@@ -22,6 +22,7 @@ import androidx.transition.TransitionManager;
 import com.codepath.quest.R;
 import com.codepath.quest.activity.HomeActivity;
 import com.codepath.quest.helper.QuestToast;
+import com.codepath.quest.model.Answer;
 import com.codepath.quest.model.Question;
 import com.google.android.material.card.MaterialCardView;
 import com.pedromassango.doubleclick.DoubleClick;
@@ -116,8 +117,8 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             String answerDescription = question.getAnswer().getDescription();
             tvAnswer.setText(answerDescription);
 
-            // Set up an on double click listener for the question card view to set
-            // up the text.
+            // Set up an on double click listener for the question card view to edit
+            // the text.
             mcvQuestion.setOnClickListener(new DoubleClick(new DoubleClickListener() {
                 @Override
                 public void onSingleClick(View view) {}
@@ -125,6 +126,18 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 @Override
                 public void onDoubleClick(View view) {
                     startEditQuestionMode(question);
+                }
+            }));
+
+            // Set up an on double click listener for the question card view to edit
+            // the text.
+            mcvAnswer.setOnClickListener(new DoubleClick(new DoubleClickListener() {
+                @Override
+                public void onSingleClick(View view) {}
+
+                @Override
+                public void onDoubleClick(View view) {
+                    startEditAnswerMode(question.getAnswer());
                 }
             }));
 
@@ -198,6 +211,36 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             question.saveInBackground();
         }
 
+        public void startEditAnswerMode(Answer answer) {
+            // Get the answer description and copy it to the
+            // edit text.
+            String answerDescription = tvAnswer.getText().toString();
+            tvAnswer.setVisibility(View.INVISIBLE);
+
+            EditText etAnswer = mcvAnswer.findViewById(R.id.etAnswer);
+            etAnswer.setVisibility(View.VISIBLE);
+            etAnswer.setText(answerDescription);
+            etAnswer.requestFocus();
+            etAnswer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus == false) {
+                        stopEditAnswerMode(answer, etAnswer);
+                    }
+                }
+            });
+        }
+
+        public void stopEditAnswerMode(Answer answer, EditText etAnswer) {
+            // Get the text from the edit text and put it back to the
+            // answer text view.
+            String newQuestionDescription = etAnswer.getText().toString();
+            etAnswer.setVisibility(View.GONE);
+            tvAnswer.setVisibility(View.VISIBLE);
+            tvAnswer.setText(newQuestionDescription);
+            answer.setDescription(newQuestionDescription);
+            answer.saveInBackground();
+        }
     }
 
     /**
