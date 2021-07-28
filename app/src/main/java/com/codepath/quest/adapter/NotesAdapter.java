@@ -2,6 +2,7 @@ package com.codepath.quest.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -23,6 +24,7 @@ import com.codepath.quest.R;
 import com.codepath.quest.activity.HomeActivity;
 import com.codepath.quest.helper.QuestToast;
 import com.codepath.quest.model.Answer;
+import com.codepath.quest.model.Page;
 import com.codepath.quest.model.Question;
 import com.google.android.material.card.MaterialCardView;
 import com.pedromassango.doubleclick.DoubleClick;

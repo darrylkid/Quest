@@ -16,6 +16,10 @@ import java.util.List;
 public class Section extends Category {
     private static final String KEY_SECTION = "Section";
 
+    public Subject getParent() {
+        return (Subject) this.getParseObject(Constants.KEY_PARENT);
+    }
+
     /**
      * Crates a section inside the Parse database.
      *
@@ -45,6 +49,7 @@ public class Section extends Category {
 
     public static void querySections(CategoryAdapter adapter, Subject parentSubject) {
         ParseQuery<Section> query = ParseQuery.getQuery(Section.class);
+        query.include(Constants.KEY_PARENT);
 
         // Filter the query to find sections under the current user.
         query.whereEqualTo(Constants.KEY_USER, ParseUser.getCurrentUser());

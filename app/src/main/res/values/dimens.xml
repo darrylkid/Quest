@@ -23,6 +23,7 @@
     <dimen name="cardview_elevation">5dp</dimen>
     <dimen name="subject_height">80dp</dimen>
     <dimen name="cardview_radius">0dp</dimen>
+    <dimen name="search_cardview_radius">10dp</dimen>
     <dimen name="no_radius">0dp</dimen>
     <dimen name="category_border_width">1dp</dimen>
     <dimen name="no_width">-100dp</dimen>
@@ -34,4 +35,8 @@
     <dimen name="cardview_icon_margin">5dp</dimen>
     <dimen name="min_question_text_height">80dp</dimen>
     <dimen name="min_text_inside_card_height">40dp</dimen>
+    <dimen name="search_bar_height">40dp</dimen>
+    <dimen name="line_radius">10dp</dimen>
+    <dimen name="vertical_border_margin">4dp</dimen>
+    <dimen name="smallest_text">12sp</dimen>
 </resources>

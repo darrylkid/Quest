@@ -4,8 +4,10 @@ import android.util.Log;
 
 import com.codepath.quest.adapter.CategoryAdapter;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -14,6 +16,10 @@ import java.util.List;
 
 @ParseClassName("Page")
 public class Page extends Category {
+
+    public Section getParent() {
+        return (Section) this.getParseObject(Constants.KEY_PARENT);
+    }
 
     /**
      * Crates a page inside the Parse database.
@@ -44,6 +50,7 @@ public class Page extends Category {
 
         public static void queryPages(CategoryAdapter adapter, Section parentSection) {
             ParseQuery<Page> query = ParseQuery.getQuery(Page.class);
+            query.include(Constants.KEY_PARENT);
 
             // Filter the query to find sections under the current user.
             query.whereEqualTo(Constants.KEY_USER, ParseUser.getCurrentUser());
