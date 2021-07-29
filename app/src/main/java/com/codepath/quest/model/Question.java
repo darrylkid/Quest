@@ -15,6 +15,8 @@ import java.util.List;
 
 @ParseClassName("Question")
 public class Question extends Note {
+    private int rank;
+
     // Empty constructor for the Parse library.
     public Question(){}
 
@@ -33,6 +35,14 @@ public class Question extends Note {
 
     public Page getParent() {
         return (Page) this.getParseObject(Constants.KEY_PARENT);
+    }
+
+    public int getRank() {
+        return this.rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
     public static void queryQuestions(NotesAdapter adapter, Page parentPage) throws ParseException {
@@ -59,32 +69,6 @@ public class Question extends Note {
             }
         };
         query.findInBackground(findQuestionsCallBack);
-    }
-
-    public static void searchQuestions(SearchAdapter adapter, String input) {
-        // Query for questions.
-        ParseQuery<Question> query = ParseQuery.getQuery(Question.class);
-        query.include(Constants.KEY_ANSWER);
-        query.include(Constants.KEY_PARENT);
-
-        // Filters the query to find questions under the current user.
-        query.whereEqualTo(Constants.KEY_USER, ParseUser.getCurrentUser());
-
-        // Find questions with descriptions that contain the user's input.
-        query.whereContains(Constants.KEY_DESCRIPTION, input);
-
-        FindCallback<Question> queryCallBack = new FindCallback<Question>() {
-            @Override
-            public void done(List<Question> results, ParseException e) {
-                if (e == null) {
-                    adapter.addAll(results);
-                    //Answer.searchAnswers(adapter, input);
-                } else {
-                    Log.e("Question", "Failure in search query.", e);
-                }
-            }
-        };
-        query.findInBackground(queryCallBack);
     }
 
 

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.codepath.quest.R;
+import com.codepath.quest.helper.Navigation;
 import com.codepath.quest.model.Answer;
 import com.codepath.quest.model.Page;
 import com.codepath.quest.model.Question;
@@ -102,10 +103,19 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             section.getParent().fetchInBackground(new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject object, ParseException e) {
+                    // Set the directory text.
                     Subject subject = (Subject) object;
                     String directory = subject.getDescription() + " / " + section.getDescription()
                             + " / " + page.getDescription();
                     tvDirectory.setText(directory);
+
+                    // Set up an on click listener for the search item.
+                    mcvResult.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Navigation.fromSearchToNotes(subject, section, page);
+                        }
+                    });
                 }
             });
         }

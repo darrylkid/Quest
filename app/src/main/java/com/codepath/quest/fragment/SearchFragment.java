@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import com.codepath.quest.R;
 import com.codepath.quest.activity.HomeActivity;
 import com.codepath.quest.adapter.SearchAdapter;
 import com.codepath.quest.helper.QuestToast;
+import com.codepath.quest.helper.SearchEngine;
+import com.codepath.quest.model.Constants;
 import com.codepath.quest.model.Question;
 
 import org.jetbrains.annotations.NotNull;
@@ -78,12 +81,10 @@ public class SearchFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Question.searchQuestions(searchAdapter, newText);
+                SearchEngine.searchQuestions(searchAdapter, newText);
                 return true;
             }
         });
-
-
     }
 
 }

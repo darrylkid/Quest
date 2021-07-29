@@ -72,4 +72,11 @@ public class Navigation {
         fragmentTransaction.replace(R.id.quest_fragment_container, notesFragment).commit();
     }
 
+    public static void fromSearchToNotes(Subject subject, Section section, Page page) {
+        HomeActivity.setCurrentSubject(subject);
+        HomeActivity.setCurrentSection(section);
+        HomeActivity.setCurrentPage(page);
+        fromPagesToNotes(page);
+    }
+
 }

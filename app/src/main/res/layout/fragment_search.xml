@@ -13,7 +13,9 @@
         app:queryHint="@string/search_hint"
         android:clickable="true"
         android:focusable="true"
-        android:background="@color/design_default_color_secondary"/>
+        android:background="@color/design_default_color_secondary">
+
+    </androidx.appcompat.widget.SearchView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSearch"
