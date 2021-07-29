@@ -149,7 +149,7 @@ public class PagesFragment extends Fragment {
 
             @Override
             public void onSelectionDelete(List<Integer> selectedItemPositions) {
-                HomeActivity.deleteSelectedItems(getContext()
+                selectionHandler.deleteSelectedItems(getContext()
                                     , pageAdapter, selectedItemPositions);
             }
         };

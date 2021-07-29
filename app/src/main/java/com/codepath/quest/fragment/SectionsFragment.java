@@ -155,7 +155,7 @@ public class SectionsFragment extends Fragment {
 
             @Override
             public void onSelectionDelete(List<Integer> selectedItemPositions) {
-                HomeActivity.deleteSelectedItems(getContext()
+                selectionHandler.deleteSelectedItems(getContext()
                                         , sectionAdapter, selectedItemPositions);
             }
         };

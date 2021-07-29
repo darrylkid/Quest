@@ -19,7 +19,9 @@ import com.codepath.quest.model.Page;
 import com.codepath.quest.model.Section;
 import com.codepath.quest.model.Subject;
 import com.google.android.material.card.MaterialCardView;
+import com.parse.ParseObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,7 +42,6 @@ public class SelectionHandler {
     /** Methods responsible for visually clearing the selection **/
 
 
-
     public void startSelectionClear(List<Integer> selectedPostions) {
         onSelectionListener.onSelectionClear(selectedPostions);
     }
@@ -49,6 +50,30 @@ public class SelectionHandler {
 
     public void startSelectionDelete(List<Integer> selectedPositions) {
         onSelectionListener.onSelectionDelete(selectedPositions);
+    }
+
+    public void deleteSelectedItems(Context context
+            , CategoryAdapter adapter
+            , List<Integer> selectedItemPositions) {
+        HomeActivity.startProgressBar(context);
+        // If we remove each item from the adapter, we will run
+        // into undefined behavior since the selectedItemPositions
+        // relies on the adapter to be static.
+        for (Integer itemPosition : selectedItemPositions) {
+            Category category = (Category)adapter.getCategory(itemPosition);
+            category.deleteInBackground();
+            category.setDeleteFlag(true);
+        }
+
+        // Remove the flagged categories.
+        List<ParseObject> newCategoryList = new ArrayList<>();
+        for (ParseObject category: adapter.getCategoryList()) {
+            if (!((Category) category).getDeleteFlag()) {
+                newCategoryList.add(category);
+            }
+        }
+        adapter.setCategoryList(newCategoryList);
+        HomeActivity.stopProgressBar(context);
     }
 
     /** Listeners for selection logic **/

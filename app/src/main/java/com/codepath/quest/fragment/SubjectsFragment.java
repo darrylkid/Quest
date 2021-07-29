@@ -123,7 +123,7 @@ public class SubjectsFragment extends Fragment {
 
             @Override
             public void onSelectionDelete(List<Integer> selectedItemPositions) {
-                HomeActivity.deleteSelectedItems(getContext(), subjectAdapter
+                selectionHandler.deleteSelectedItems(getContext(), subjectAdapter
                                                 , selectedItemPositions);
             }
         };

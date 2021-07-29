@@ -199,30 +199,6 @@ public class HomeActivity extends AppCompatActivity {
         );
     }
 
-    public static void deleteSelectedItems(Context context
-                                           , CategoryAdapter adapter
-                                           , List<Integer> selectedItemPositions) {
-        HomeActivity.startProgressBar(context);
-        // If we remove each item from the adapter, we will run
-        // into undefined behavior since the selectedItemPositions
-        // relies on the adapter to be static.
-        for (Integer itemPosition : selectedItemPositions) {
-            Category category = (Category)adapter.getCategory(itemPosition);
-            category.deleteInBackground();
-            category.setDeleteFlag(true);
-        }
-
-        // Remove the flagged categories.
-        List<ParseObject> newCategoryList = new ArrayList<>();
-        for (ParseObject category: adapter.getCategoryList()) {
-            if (!((Category) category).getDeleteFlag()) {
-                newCategoryList.add(category);
-            }
-        }
-        adapter.setCategoryList(newCategoryList);
-        HomeActivity.stopProgressBar(context);
-    }
-
     public static MenuItem getDeleteMenuItem(Context context, int deleteMenuItemPosition) {
         Toolbar toolbar = ((HomeActivity)context).findViewById(R.id.tbHome);
         Menu currentMenu = toolbar.getMenu();
