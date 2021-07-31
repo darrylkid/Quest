@@ -48,6 +48,12 @@ public class Constants {
     public static final Set<String> INSIGNIFICANT_WORDS_SET
             = new HashSet<>(Arrays.asList(INSIGNIFICANT_WORDS));
 
+    public static final Character[] ILLEGAL_FILE_NAME_CHARS =
+            {'#','%', '&', '{' ,'}','\\','/', '<', '>', '?', '$', '.'
+                    , '!', '\'', '"', ':',';', '+', '|', '=', '[', ']', '@'};
+    public static final Set<Character> ILLEGAL_FILE_NAME_CHARS_SET =
+            new HashSet<>(Arrays.asList(ILLEGAL_FILE_NAME_CHARS));
+
 
 
 }

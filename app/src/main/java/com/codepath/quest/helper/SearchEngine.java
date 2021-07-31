@@ -51,7 +51,7 @@ public class SearchEngine {
      * 2) Ranking search results by how many times the tokens (from the user input)
      *    appear inside the question & answers.
      * 3) Searching only what matters by removing insignificant
-     *    words such as "is, the, I"
+     *    words such as "is, the, I".
      *
      * @param questions the questions to filter.
      * @param target what to search
@@ -120,6 +120,26 @@ public class SearchEngine {
      * @return true if the target is contained in the search space
      *          , false otherwise
      */
+    // target = box
+    // searchspace = bowl
+
+
+    //               000123
+    // index:
+    // search space: balxballballalxoonball
+    // target:       allall
+    //                allall
+    //                  allall
+    //                   allall
+    //                    allall
+    //                       allall
+    //                        allall
+    //                           allall
+    //                                 allball
+    //
+    //
+    //
+
     public static boolean kmpSearch(String target, String searchSpace) {
         if (target.isEmpty() || searchSpace.isEmpty()) {
             return false;
@@ -169,6 +189,9 @@ public class SearchEngine {
      *             0 0 0 0 0 0 0 1 2 3 4
      *         The longest prefix for suffix "love" (end of pattern) is "love".
      */
+
+    // ababx
+    // 00120
     public static List<Integer> buildFailureTable(String pattern) {
         List<Integer> failureTable = new ArrayList<>(pattern.length());
         failureTable.add(0, 0);

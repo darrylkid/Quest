@@ -33,4 +33,6 @@
     <string name="add_question">Add question here (required…)</string>
     <string name="collapsable">Collapsable</string>
     <string name="search_hint">Search questions…</string>
+    <string name="export">Export as PDF</string>
+    <string name="file_name">Enter File Name (do not include .pdf)</string>
 </resources>

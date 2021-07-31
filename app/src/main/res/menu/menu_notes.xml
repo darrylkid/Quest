@@ -6,5 +6,13 @@
         android:id="@+id/iAddQuestionAndAnswer"
         android:title="@string/new_question_and_answer"
         app:showAsAction="ifRoom"
+        app:itemTextColor="@color/white"
+        android:icon="@drawable/add"/>
+
+    <item
+        android:id="@+id/iExportPDF"
+        android:title="@string/export"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/pdf"
         app:itemTextColor="@color/white"/>
 </menu>
