@@ -78,30 +78,30 @@ Welcome to Quest, a question & answer note-taking app heavily inspired by the Co
 
 **Flow Navigation** (Screen to Screen)
 * Login
-  -> Sign Up
-  -> Main Menu
+  - Sign Up
+  - Main Menu
 * Sign Up
-  -> Login
-  -> Main Menu
+  - Login
+  - Main Menu
 * Home
-  -> Search
-  -> Subjects
+  - Search
+  - Subjects
 * Search
-  -> Home
-  -> Subjects
-  -> Notes
+  - Home
+  - Subjects
+  - Notes
 * Subjects
-  -> Home
-  -> Search
-  -> Sections
+  - Home
+  - Search
+  - Sections
 * Sections
-  -> Home
-  -> Search
-  -> Pages
+  - Home
+  - Search
+  - Pages
 * Pages
-  -> Home
-  -> Search
-  -> Notes
+  - Home
+  - Search
+  - Notes
 * Notes
   
 
