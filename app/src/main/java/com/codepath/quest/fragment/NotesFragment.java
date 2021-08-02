@@ -23,6 +23,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import android.os.Environment;
 import android.util.Log;
@@ -41,10 +42,12 @@ import com.codepath.quest.BuildConfig;
 import com.codepath.quest.R;
 import com.codepath.quest.activity.HomeActivity;
 import com.codepath.quest.adapter.NotesAdapter;
+import com.codepath.quest.helper.TextToPDF;
 import com.codepath.quest.model.Answer;
 import com.codepath.quest.model.Constants;
 import com.codepath.quest.model.Page;
 import com.codepath.quest.model.Question;
+import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -141,10 +144,23 @@ public class NotesFragment extends Fragment {
         startNotesFragmentToolbar();
 
         // Set up recycler view.
+        RecyclerViewDragDropManager dragDropManager = new RecyclerViewDragDropManager();
+
         rvNotes = view.findViewById(R.id.rvNotes);
-        rvNotes.setAdapter(notesAdapter);
+
+        // The drag drop manager wraps the notes adapter to make its items
+        // draggable.
+        rvNotes.setAdapter(dragDropManager.createWrappedAdapter(notesAdapter));
         rvNotes.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        // Disable change animations.
+        ((SimpleItemAnimator) rvNotes.getItemAnimator()).setSupportsChangeAnimations(false);
+
+        // Activate dragging only when the item is long pressed.
+        dragDropManager.setInitiateOnLongPress(true);
+        dragDropManager.setInitiateOnMove(false);
+
+        dragDropManager.attachRecyclerView(rvNotes);
 
         // Let the Home Activity know what the current page is.
         HomeActivity.setCurrentPage(parentPage);
@@ -254,6 +270,7 @@ public class NotesFragment extends Fragment {
         question.setDescription(questionDescription);
         question.setParent(parentPage);
         question.setUser(user);
+        question.setOrder(notesAdapter.getQuestions().size());
 
         // We want a new answer object attached to the question
         // even if the answer is empty.
@@ -300,7 +317,7 @@ public class NotesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 try {
-                    exportDataToPDF(fileName);
+                    TextToPDF.exportDataToPDF(getContext(), notesAdapter, fileName);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -321,65 +338,6 @@ public class NotesFragment extends Fragment {
             }
         }
         return result;
-    }
-
-    private void exportDataToPDF(String fileName) throws IOException {
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString();
-        File file = new File(path, fileName + ".pdf");
-        PdfWriter writer = null;
-        try {
-            //writer = new PdfWriter(path );
-            writer = new PdfWriter(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        PdfDocument pdf = new PdfDocument(writer);
-        Document document = new Document(pdf);
-
-        // Write question & answer descriptions to the document.
-        write(document);
-
-        document.close();
-
-        openPDF(file);
-    }
-
-    public void write(Document document) {
-        // Write the page title.
-        Paragraph pageTitle = new Paragraph(parentPage.getDescription());
-        pageTitle.setFontColor(ColorConstants.BLUE).setFontSize(24.0f);
-        document.add(pageTitle);
-
-        // Write the questions and answers.
-        for (Question question: notesAdapter.getQuestions()) {
-            Table table = new Table(2);
-            table.addCell(writeCell(question.getDescription(), TextAlignment.LEFT).setFontColor(ColorConstants.BLUE));
-            table.addCell(writeCell(question.getAnswer().getDescription(), TextAlignment.RIGHT));
-            document.add(table);
-        }
-    }
-
-    public Cell writeCell(String description, TextAlignment alignment) {
-        Cell cell = new Cell().add(new Paragraph(description));
-        cell.setPadding(0);
-        cell.setTextAlignment(alignment);
-        cell.setBorder(Border.NO_BORDER);
-        return cell;
-    }
-
-    public void openPDF(File pdfFile) {
-        Uri uriPath = FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID + ".provider", pdfFile);
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.setDataAndType(uriPath, "application/pdf");
-        try {
-            startActivity(intent);
-        }
-        catch (ActivityNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 }
 

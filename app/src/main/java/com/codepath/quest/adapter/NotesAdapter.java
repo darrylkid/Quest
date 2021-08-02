@@ -4,18 +4,25 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
@@ -27,6 +34,10 @@ import com.codepath.quest.model.Answer;
 import com.codepath.quest.model.Page;
 import com.codepath.quest.model.Question;
 import com.google.android.material.card.MaterialCardView;
+import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter;
+import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
+import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
+import com.parse.ParseObject;
 import com.pedromassango.doubleclick.DoubleClick;
 import com.pedromassango.doubleclick.DoubleClickListener;
 
@@ -34,7 +45,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+                          implements DraggableItemAdapter<RecyclerView.ViewHolder> {
     private Context context;
     private List<Question> questionList;
 
@@ -42,6 +54,9 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public NotesAdapter(Context context, List<Question> questionList) {
         this.context = context;
         this.questionList = questionList;
+
+        // Required for the drag-and-drop functionality to work.
+        setHasStableIds(true);
     }
 
     @NonNull
@@ -86,9 +101,65 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     /**
+     * Methods for implementing draggable view functionality.
+     */
+
+    @Override
+    public boolean onCheckCanStartDrag(@NonNull RecyclerView.ViewHolder holder, int position, int x, int y) {
+        View qAndAItem = holder.itemView;
+        RelativeLayout qAndADraggable = qAndAItem.findViewById(R.id.rlQAndA);
+
+        // Check if the x and y position of where the user long pressed is inside
+        // the qAndAItem.
+        int width = qAndADraggable.getWidth();
+        int height = qAndADraggable.getHeight();
+        int draggableXPos = qAndADraggable.getLeft();
+        int draggableYPos = qAndADraggable.getTop();
+
+        return ((x >= draggableXPos) && (x < (draggableXPos + width))
+                && (y >= draggableYPos) && (y < draggableYPos + height));
+    }
+
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public ItemDraggableRange onGetItemDraggableRange(@NonNull RecyclerView.ViewHolder holder, int position) {
+        return null;
+    }
+
+    @Override
+    public void onMoveItem(int fromPosition, int toPosition) {
+        // Move the item in the Model space.
+        Question removed = questionList.remove(fromPosition);
+        questionList.add(toPosition, removed);
+
+        // Update the order in the database so that
+        // querying questions will remember the order.
+        for (int i = 0; i < questionList.size(); i++) {
+            Question question = questionList.get(i);
+            question.setOrder(i);
+            question.saveInBackground();
+        }
+    }
+
+    @Override
+    public long getItemId(int position) {
+        // Required for the drag-and-drop functionality to work.
+        return questionList.get(position).hashCode();
+    }
+
+    @Override
+    public boolean onCheckCanDrop(int draggingPosition, int dropPosition) { return false; }
+
+    @Override
+    public void onItemDragStarted(int position) {}
+
+    @Override
+    public void onItemDragFinished(int fromPosition, int toPosition, boolean result) {}
+
+    /**
      * View holder for the question AND the answer.
      */
-    public class QAndAViewHolder extends RecyclerView.ViewHolder {
+    public class QAndAViewHolder extends AbstractDraggableItemViewHolder {
         private MaterialCardView mcvQuestion;
         private MaterialCardView mcvAnswer;
         private MaterialCardView mcvArrow;
@@ -192,6 +263,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             etQuestion.setVisibility(View.VISIBLE);
             etQuestion.setText(questionDescription);
             etQuestion.requestFocus();
+            HomeActivity.showKeyboard(context, etQuestion);
             etQuestion.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
@@ -209,6 +281,12 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             etQuestion.setVisibility(View.GONE);
             tvQuestion.setVisibility(View.VISIBLE);
             tvQuestion.setText(newQuestionDescription);
+
+            // Parse doesn't like empty strings.
+            if (etQuestion.getText().toString().length() == 0) {
+                newQuestionDescription = " ";
+            }
+
             question.setDescription(newQuestionDescription);
             question.saveInBackground();
         }
@@ -223,10 +301,13 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             etAnswer.setVisibility(View.VISIBLE);
             etAnswer.setText(answerDescription);
             etAnswer.requestFocus();
+            etAnswer.setFocusableInTouchMode(true);
+            HomeActivity.showKeyboard(context, etAnswer);
+
             etAnswer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
-                    if (hasFocus == false) {
+                    if (!hasFocus) {
                         stopEditAnswerMode(answer, etAnswer);
                     }
                 }
@@ -236,11 +317,16 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public void stopEditAnswerMode(Answer answer, EditText etAnswer) {
             // Get the text from the edit text and put it back to the
             // answer text view.
-            String newQuestionDescription = etAnswer.getText().toString();
+            String newAnswerDescription = etAnswer.getText().toString();
             etAnswer.setVisibility(View.GONE);
             tvAnswer.setVisibility(View.VISIBLE);
-            tvAnswer.setText(newQuestionDescription);
-            answer.setDescription(newQuestionDescription);
+            tvAnswer.setText(newAnswerDescription);
+
+            // Parse doesn't like empty strings.
+            if (etAnswer.getText().toString().length() == 0) {
+                newAnswerDescription = " ";
+            }
+            answer.setDescription(newAnswerDescription);
             answer.saveInBackground();
         }
     }

@@ -13,6 +13,10 @@ android {
         versionCode 1
         versionName "1.0"
 
+        dataBinding {
+            enabled=true
+        }
+
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -46,7 +50,7 @@ dependencies {
     implementation 'com.github.parse-community.Parse-SDK-Android:parse:1.25.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0' // for logging API calls to LogCat
 
-    // Double Click Listener
+    // Double Click Listener Library
     implementation 'com.github.pedromassango:doubleClick:3.0'
 
     // Scroll Toolbar.
@@ -54,4 +58,7 @@ dependencies {
 
     // iText API for converting text into a PDF
     implementation 'com.itextpdf:itext7-core:7.1.16'
+
+    // Advanced RecyclerView library that allows drag & drop to be possible
+    implementation 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:1.0.0'
 }

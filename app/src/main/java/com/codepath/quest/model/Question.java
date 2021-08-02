@@ -45,6 +45,8 @@ public class Question extends Note {
         this.rank = rank;
     }
 
+    public void setOrder(int order) { this.put(Constants.KEY_ORDER, order); }
+
     public static void queryQuestions(NotesAdapter adapter, Page parentPage) throws ParseException {
         ParseQuery<Question> query = ParseQuery.getQuery(Question.class);
         query.include(Constants.KEY_ANSWER);
@@ -55,6 +57,11 @@ public class Question extends Note {
 
         // Filters the query to find questions under the current page.
         query.whereEqualTo(Constants.KEY_PARENT, parentPage);
+
+        // Query the questions according to each Question's order (defined
+        // when the user drags and drops a Question to a different position)
+        query.orderByAscending(Constants.KEY_ORDER);
+
 
         FindCallback<Question> findQuestionsCallBack = new FindCallback<Question>() {
             @Override

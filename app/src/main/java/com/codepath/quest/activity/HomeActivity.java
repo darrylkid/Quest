@@ -223,6 +223,11 @@ public class HomeActivity extends AppCompatActivity {
         deleteMenuItem.setOnMenuItemClickListener(deleteHandler);
     }
 
+    public static void showKeyboard(Context context, EditText etView) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(etView, InputMethodManager.SHOW_IMPLICIT);
+    }
+
     @Override
     /**
      * Allows all touches outside of the edit text to be
