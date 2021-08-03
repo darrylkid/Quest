@@ -85,6 +85,7 @@
                         android:layout_height="wrap_content"
                         android:focusable="true"
                         android:clickable="true">
+                        <!-- Trash Icon -->
                         <ImageView
                             android:id="@+id/ivDelete"
                             android:layout_width="@dimen/cardview_icon_width"
@@ -92,6 +93,23 @@
                             android:contentDescription="@string/delete"
                             android:layout_gravity="bottom|end"
                             android:src="@drawable/delete"
+                            android:layout_margin="@dimen/cardview_icon_margin"/>
+                    </com.google.android.material.card.MaterialCardView>
+                    <!-- Cardview container tha allows the move icon to be clickable -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/mcvMove"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:clickable="true">
+                        <!-- Move Icon -->
+                        <ImageView
+                            android:id="@+id/ivMove"
+                            android:layout_width="@dimen/cardview_icon_width"
+                            android:layout_height="@dimen/cardview_icon_height"
+                            android:contentDescription="@string/delete"
+                            android:layout_gravity="bottom|end"
+                            android:src="@drawable/move_arrow"
                             android:layout_margin="@dimen/cardview_icon_margin"/>
                     </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>

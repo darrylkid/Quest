@@ -122,8 +122,6 @@ public class SearchEngine {
      */
     // target = box
     // searchspace = bowl
-
-
     //               000123
     // index:
     // search space: balxballballalxoonball

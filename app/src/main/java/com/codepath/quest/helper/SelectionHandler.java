@@ -258,7 +258,6 @@ public class SelectionHandler {
         mcvCategory.setStrokeColor(newToolbarColor);
         mcvCategory.setStrokeWidth(resources.getInteger(R.integer.view_border_width));
         startSelectionToolbar(context, newToolbarColor);
-
     }
 
     /**

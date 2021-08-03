@@ -2,7 +2,10 @@ package com.codepath.quest.model;
 
 import android.util.Log;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.codepath.quest.adapter.CategoryAdapter;
+import com.codepath.quest.adapter.MiniCategoryAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
@@ -48,7 +51,7 @@ public class Subject extends Category {
      * Gets all the subjects under the current logged in user
      * and adds the subjects to the adapter.
      */
-    public static void querySubjects(CategoryAdapter adapter) {
+    public static void querySubjects(RecyclerView.Adapter adapter) {
         ParseQuery<Subject> query = ParseQuery.getQuery(Subject.class);
 
         // Filters the query to find subjects under the current user.
@@ -59,7 +62,11 @@ public class Subject extends Category {
             public void done(List<Subject> subjects, ParseException e) {
                 if (e == null) {
                     // Success! We obtained the subjects!
-                    adapter.addAll(subjects);
+                    if (adapter instanceof CategoryAdapter) {
+                        ((CategoryAdapter)adapter).addAll(subjects);
+                    } else if (adapter instanceof MiniCategoryAdapter) {
+                        ((MiniCategoryAdapter)adapter).addAll(subjects);
+                    }
                 } else {
                     // Failure in querying the subjects.
                     Log.e(Constants.KEY_SUBJECT, "Failed to query subjects.", e);

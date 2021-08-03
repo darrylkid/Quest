@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:layout_margin="@dimen/cardview_padding">
+
+    <RelativeLayout
+        android:id="@+id/rlTopMiniNavigationBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mcvMiniNavigationBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/tvMiniNavigationTitle"
+            android:layout_alignBottom="@id/tvMiniNavigationTitle"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@color/white"
+            app:cardElevation="0dp"
+            card_view:cardPreventCornerOverlap="false">
+            <ImageView
+                android:id="@+id/ivMiniNavigationBack"
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="match_parent"
+                android:src="@drawable/back"
+                android:contentDescription="@string/back" />
+        </com.google.android.material.card.MaterialCardView>
+        <TextView
+            android:id="@+id/tvMiniNavigationTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@id/mcvMiniNavigationBack"
+            android:text="@string/subjects"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="@dimen/large_text"
+            android:layout_margin="@dimen/cardview_padding"/>
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMiniNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dialog_height"
+        android:layout_below="@id/rlTopMiniNavigationBar"/>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rvMiniNavigation">
+
+        <!-- Center to evenly divide the 2 buttons -->
+        <View
+            android:id="@+id/vCenter"
+            android:layout_centerInParent="true"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+        <Button
+            android:id="@+id/btnNativagionCancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/vCenter"
+            android:text="@string/cancel"/>
+        <Button
+            android:id="@+id/btnNavigationSelect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/vCenter"
+            android:enabled="false"
+            android:text="@string/select"/>
+    </RelativeLayout>
+
+</RelativeLayout>

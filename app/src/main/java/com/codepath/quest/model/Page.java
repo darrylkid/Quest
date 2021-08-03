@@ -2,7 +2,11 @@ package com.codepath.quest.model;
 
 import android.util.Log;
 
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.codepath.quest.activity.HomeActivity;
 import com.codepath.quest.adapter.CategoryAdapter;
+import com.codepath.quest.adapter.MiniCategoryAdapter;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseClassName;
@@ -48,7 +52,7 @@ public class Page extends Category {
         this.saveInBackground(saveHandler);
     }
 
-        public static void queryPages(CategoryAdapter adapter, Section parentSection) {
+        public static void queryPages(RecyclerView.Adapter adapter, Section parentSection) {
             ParseQuery<Page> query = ParseQuery.getQuery(Page.class);
             query.include(Constants.KEY_PARENT);
 
@@ -60,10 +64,15 @@ public class Page extends Category {
 
             FindCallback<Page> findPagesCallBack = new FindCallback<Page>() {
                 @Override
-                public void done(List<Page> objects, ParseException e) {
+                public void done(List<Page> pages, ParseException e) {
                     if (e == null) {
                         // Success! We obtained the subjects!
-                        adapter.addAll(objects);
+                        if (adapter instanceof CategoryAdapter) {
+                            ((CategoryAdapter)adapter).addAll(pages);
+                        } else if (adapter instanceof MiniCategoryAdapter) {
+                            ((MiniCategoryAdapter)adapter).addAll(pages);
+                        }
+
                     } else {
                         // Failure in querying the subjects.
                         Log.e(Constants.KEY_PAGE, "Failed to query pages.", e);

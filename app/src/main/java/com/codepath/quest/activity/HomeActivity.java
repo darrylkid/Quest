@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.animation.ValueAnimator;
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -221,6 +224,26 @@ public class HomeActivity extends AppCompatActivity {
 
         editMenuItem.setOnMenuItemClickListener(editHandler);
         deleteMenuItem.setOnMenuItemClickListener(deleteHandler);
+    }
+
+    /**
+     * Initializes a dialog
+     *
+     * @param context the context in which the dialog spawns
+     * @param dialogId the layout to spawn inside the dialog.
+     * @return the dialog to show/hide
+     */
+    public static Dialog buildDialog(Context context, int dialogId, boolean showDialogBackground) {
+        Dialog dialog = new Dialog(context);
+
+        if (showDialogBackground) {
+            Window window = dialog.getWindow();
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
+        dialog.setCancelable(true);
+        dialog.setContentView(dialogId);
+        return dialog;
     }
 
     public static void showKeyboard(Context context, EditText etView) {

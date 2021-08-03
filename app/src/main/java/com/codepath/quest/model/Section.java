@@ -2,7 +2,10 @@ package com.codepath.quest.model;
 
 import android.util.Log;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.codepath.quest.adapter.CategoryAdapter;
+import com.codepath.quest.adapter.MiniCategoryAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
@@ -47,7 +50,7 @@ public class Section extends Category {
         this.saveInBackground(saveHandler);
     }
 
-    public static void querySections(CategoryAdapter adapter, Subject parentSubject) {
+    public static void querySections(RecyclerView.Adapter adapter, Subject parentSubject) {
         ParseQuery<Section> query = ParseQuery.getQuery(Section.class);
         query.include(Constants.KEY_PARENT);
 
@@ -59,10 +62,14 @@ public class Section extends Category {
 
         FindCallback<Section> findSectionsCallBack = new FindCallback<Section>() {
             @Override
-            public void done(List<Section> objects, ParseException e) {
+            public void done(List<Section> sections, ParseException e) {
                 if (e == null) {
                     // Success! We obtained the subjects!
-                    adapter.addAll(objects);
+                    if (adapter instanceof CategoryAdapter) {
+                        ((CategoryAdapter)adapter).addAll(sections);
+                    } else if (adapter instanceof MiniCategoryAdapter) {
+                        ((MiniCategoryAdapter)adapter).addAll(sections);
+                    }
                 } else {
                     // Failure in querying the subjects.
                     Log.e(KEY_SECTION, "Failed to query sections.", e);

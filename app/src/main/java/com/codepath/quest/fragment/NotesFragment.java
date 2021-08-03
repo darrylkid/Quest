@@ -188,7 +188,34 @@ public class NotesFragment extends Fragment {
         MenuItem.OnMenuItemClickListener addQAndAHandler = new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                startAddQDialog(getContext(), R.layout.dialog_add_q_and_a);
+                Dialog dialog = HomeActivity.buildDialog(getContext(), R.layout.dialog_add_q_and_a, true);
+
+                // Set an on click listener for the submit button.
+                Button submit = dialog.findViewById(R.id.btnSubmitQAndA);
+                submit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Get the text from the question and answer views.
+                        EditText etQuestionDescription = dialog.findViewById(R.id.etAddQ);
+                        String questionDescription = etQuestionDescription.getText().toString();
+                        EditText etAnswerDescription = dialog.findViewById(R.id.etAddAns);
+                        String answerDescription = etAnswerDescription.getText().toString();
+
+                        // Parse does not accept an empty string of length 0 as acceptable
+                        // value. Thus, we set the description to a space character if nothing
+                        // was typed in for the answer.
+                        if (answerDescription.equals("")) {
+                            answerDescription = " ";
+                        }
+                        createQAndA(questionDescription, answerDescription);
+
+                        // Hide the dialog.
+                        dialog.hide();
+                    }
+                });
+
+                dialog.show();
+
                 return true;
             }
         };
@@ -205,8 +232,6 @@ public class NotesFragment extends Fragment {
         };
         pdfExportItem.setOnMenuItemClickListener(pdfExportHandler);
 
-
-
         // Set the action bar title and subtitle.
         String subjectDescription = HomeActivity.getCurrentSubject().getDescription();
         String sectionDescription = HomeActivity.getCurrentSection().getDescription();
@@ -218,40 +243,6 @@ public class NotesFragment extends Fragment {
         // Animate the tool bar color.
         HomeActivity.setToolbarColor(toolbar, currentToolbarColor
                 ,getResources().getColor(R.color.design_default_color_primary));
-    }
-
-
-    public void startAddQDialog(Context context, int dialogId) {
-        Dialog dialog = new Dialog(context);
-        Window window = dialog.getWindow();
-        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setCancelable(true);
-        dialog.setContentView(dialogId);
-
-        // Set an on click listener for the submit button.
-        Button submit = dialog.findViewById(R.id.btnSubmitQAndA);
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Get the text from the question and answer views.
-                EditText etQuestionDescription = dialog.findViewById(R.id.etAddQ);
-                String questionDescription = etQuestionDescription.getText().toString();
-                EditText etAnswerDescription = dialog.findViewById(R.id.etAddAns);
-                String answerDescription = etAnswerDescription.getText().toString();
-
-                // Parse does not accept an empty string of length 0 as acceptable
-                // value. Thus, we set the description to a space character if nothing
-                // was typed in for the answer.
-                if (answerDescription.equals("")) {
-                    answerDescription = " ";
-                }
-                createQAndA(questionDescription, answerDescription);
-
-                // Hide the dialog.
-                dialog.hide();
-            }
-        });
-        dialog.show();
     }
 
     /**

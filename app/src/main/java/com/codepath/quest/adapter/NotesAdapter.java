@@ -1,6 +1,7 @@
 package com.codepath.quest.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -19,10 +20,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
@@ -33,17 +36,22 @@ import com.codepath.quest.helper.QuestToast;
 import com.codepath.quest.model.Answer;
 import com.codepath.quest.model.Page;
 import com.codepath.quest.model.Question;
+import com.codepath.quest.model.Subject;
 import com.google.android.material.card.MaterialCardView;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.SaveCallback;
 import com.pedromassango.doubleclick.DoubleClick;
 import com.pedromassango.doubleclick.DoubleClickListener;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                           implements DraggableItemAdapter<RecyclerView.ViewHolder> {
@@ -241,6 +249,69 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 public void onClick(View v) {
                     collapseMenu();
                     delete(getLayoutPosition());
+                }
+            });
+
+            // Set up an on click listener for the move arrow icon
+            MaterialCardView moveIcon = llQuestionOptions.findViewById(R.id.mcvMove);
+            moveIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Dialog dialog = HomeActivity.buildDialog(context, R.layout.dialog_category_navigtion, false);
+
+                    // Set up the adapter and recycler view.
+                    MiniCategoryAdapter adapter = new MiniCategoryAdapter(context, new ArrayList<>(), dialog);
+                    RecyclerView rvMiniNavigation = dialog.findViewById(R.id.rvMiniNavigation);
+                    rvMiniNavigation.setAdapter(adapter);
+                    rvMiniNavigation.setLayoutManager(new LinearLayoutManager(context));
+
+                    Subject.querySubjects(adapter);
+
+                    // MiniCategoryAdapter needs to know what to query when the
+                    // the back card view is clicked.
+                    MaterialCardView back = dialog.findViewById(R.id.mcvMiniNavigationBack);
+
+                    // Set up an on click listener for the cancel button.
+                    Button cancel = dialog.findViewById(R.id.btnNativagionCancel);
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.hide();
+                        }
+                    });
+
+                    // Set up an on click listener for the select button.
+                    Button select = dialog.findViewById(R.id.btnNavigationSelect);
+                    select.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Page parentPage = (Page) adapter.getCategories().get(adapter.getSelectedPosition());
+
+                            // Error handling for when the user selects the page
+                            // the question is currently residing in.
+                            if (HomeActivity.getCurrentPage().getObjectId().equals(parentPage.getObjectId())) {
+                                Toast.makeText(context
+                                        , "Question cannot be moved to the same Page. Please try again"
+                                        , Toast.LENGTH_SHORT);
+                                return;
+                            }
+
+                            // Get the selected item and move the question to
+                            // its new page.
+                            int fromPosition = getLayoutPosition();
+                            Question moved = questionList.get(fromPosition);
+                            moved.setParent(parentPage);
+                            moved.saveInBackground();
+
+                            // Render the changes.
+                            questionList.remove(fromPosition);
+                            notifyItemRemoved(fromPosition);
+
+                            dialog.hide();
+                        }
+                    });
+
+                    dialog.show();
                 }
             });
 
