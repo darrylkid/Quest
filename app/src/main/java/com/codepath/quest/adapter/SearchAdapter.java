@@ -16,6 +16,8 @@ import com.codepath.quest.model.Page;
 import com.codepath.quest.model.Question;
 import com.codepath.quest.model.Section;
 import com.codepath.quest.model.Subject;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.material.card.MaterialCardView;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -76,9 +78,17 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             tvQuestionResult.setText(result.getDescription());
             tvAnswerResult.setText(result.getAnswer().getDescription());
 
+            // Start a bounce animation each
+            // time a result is binded.
+            YoYo.with(Techniques.BounceInUp).duration(750).playOn(mcvResult);
+            YoYo.with(Techniques.BounceInUp).duration(750).playOn(tvQuestionResult);
+            YoYo.with(Techniques.BounceInDown).duration(750).playOn(tvAnswerResult);
+
             // Get Question directory descriptions. The reason for the chained
             // function call is so the data of the reference can be included.
             getPageParent(result);
+
+
         }
 
         private void getPageParent(Question question) {
@@ -108,6 +118,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                     String directory = subject.getDescription() + " / " + section.getDescription()
                             + " / " + page.getDescription();
                     tvDirectory.setText(directory);
+
+                    // Start a bounce animation each
+                    // time a directory
+                    YoYo.with(Techniques.BounceInUp).duration(500).playOn(tvDirectory);
 
                     // Set up an on click listener for the search item.
                     mcvResult.setOnClickListener(new View.OnClickListener() {

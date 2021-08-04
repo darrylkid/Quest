@@ -15,6 +15,8 @@ import com.codepath.quest.helper.SelectionHandler;
 import com.codepath.quest.model.Page;
 import com.codepath.quest.model.Section;
 import com.codepath.quest.model.Subject;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.material.card.MaterialCardView;
 import com.parse.ParseObject;
 
@@ -123,6 +125,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         }
 
         private void bind(ParseObject category) {
+            // Start a roll in animation each time
+            //  a category item is binded.
+            YoYo.with(Techniques.RollIn).duration(250).playOn(tvCategory);
+            YoYo.with(Techniques.RollIn).duration(250).playOn(mcvCategory);
+
             // Conditionally bind the data to the edit text view
             // depending on the child of the category.
             if (category instanceof Page) {

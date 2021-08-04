@@ -25,6 +25,8 @@ import com.codepath.quest.model.Answer;
 import com.codepath.quest.model.Page;
 import com.codepath.quest.model.Question;
 import com.codepath.quest.model.Subject;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.material.card.MaterialCardView;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
@@ -171,6 +173,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             mcvArrow = qAndAView.findViewById(R.id.mcvArrow);
             ivArrow = qAndAView.findViewById(R.id.ivArrow);
             llQuestionOptions = qAndAView.findViewById(R.id.llQuestionOptions);
+
         }
 
         public void bind(Question question) {
@@ -181,6 +184,11 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             // Bind the answer description.
             String answerDescription = question.getAnswer().getDescription();
             tvAnswer.setText(answerDescription);
+
+            // Start a flip animation each
+            // time a question & answer is binded.
+            YoYo.with(Techniques.FlipInX).duration(750).playOn(tvQuestion);
+            YoYo.with(Techniques.FlipInX).duration(750).playOn(tvAnswer);
 
             // Set up an on double click listener for the question card view to edit
             // the text.
