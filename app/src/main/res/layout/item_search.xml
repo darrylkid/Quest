@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvDirectory"
-            android:textColor="@color/design_default_color_primary"
+            android:textColor="?attr/colorSecondaryVariant"
             android:textSize="@dimen/medium_text"
             android:layout_margin="@dimen/cardview_padding"/>
         <!-- Border -->
@@ -48,7 +48,7 @@
             android:id="@+id/tvAnswerResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorPrimaryDark"
             android:textSize="@dimen/medium_text"
             android:layout_margin="@dimen/cardview_padding"
             android:layout_below="@id/border" />

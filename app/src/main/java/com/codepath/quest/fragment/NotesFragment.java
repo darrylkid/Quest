@@ -242,7 +242,7 @@ public class NotesFragment extends Fragment {
 
         // Animate the tool bar color.
         HomeActivity.setToolbarColor(toolbar, currentToolbarColor
-                ,getResources().getColor(R.color.design_default_color_primary));
+                , HomeActivity.getThemeColor(getContext(), R.attr.colorPrimary));
     }
 
     /**

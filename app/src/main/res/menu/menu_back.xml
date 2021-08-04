@@ -7,6 +7,5 @@
         android:icon="@drawable/back"
         android:title="@string/back"
         app:showAsAction="always"
-        app:itemTextColor="@color/white"
-        />
+        app:iconTint="@drawable/state_text_color_on_primary" />
 </menu>

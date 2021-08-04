@@ -41,4 +41,8 @@
     <dimen name="smallest_text">12sp</dimen>
     <dimen name="dialog_height">300dp</dimen>
     <dimen name="large_text">24sp</dimen>
+    <dimen name="logo_height">200dp</dimen>
+    <dimen name="edit_text_radius">5dp</dimen>
+    <dimen name="login_horizontal_margin">40dp</dimen>
+    <dimen name="quest_icon_text_width">100dp</dimen>
 </resources>

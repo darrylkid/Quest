@@ -1,21 +1,12 @@
 package com.codepath.quest.adapter;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.util.Log;
-import android.view.GestureDetector;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -23,8 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.AutoTransition;
@@ -32,7 +21,6 @@ import androidx.transition.TransitionManager;
 
 import com.codepath.quest.R;
 import com.codepath.quest.activity.HomeActivity;
-import com.codepath.quest.helper.QuestToast;
 import com.codepath.quest.model.Answer;
 import com.codepath.quest.model.Page;
 import com.codepath.quest.model.Question;
@@ -41,9 +29,6 @@ import com.google.android.material.card.MaterialCardView;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.SaveCallback;
 import com.pedromassango.doubleclick.DoubleClick;
 import com.pedromassango.doubleclick.DoubleClickListener;
 
@@ -51,7 +36,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                           implements DraggableItemAdapter<RecyclerView.ViewHolder> {
@@ -260,16 +244,12 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     Dialog dialog = HomeActivity.buildDialog(context, R.layout.dialog_category_navigtion, false);
 
                     // Set up the adapter and recycler view.
-                    MiniCategoryAdapter adapter = new MiniCategoryAdapter(context, new ArrayList<>(), dialog);
+                    CategoryInDialogAdapter adapter = new CategoryInDialogAdapter(context, new ArrayList<>(), dialog);
                     RecyclerView rvMiniNavigation = dialog.findViewById(R.id.rvMiniNavigation);
                     rvMiniNavigation.setAdapter(adapter);
                     rvMiniNavigation.setLayoutManager(new LinearLayoutManager(context));
 
                     Subject.querySubjects(adapter);
-
-                    // MiniCategoryAdapter needs to know what to query when the
-                    // the back card view is clicked.
-                    MaterialCardView back = dialog.findViewById(R.id.mcvMiniNavigationBack);
 
                     // Set up an on click listener for the cancel button.
                     Button cancel = dialog.findViewById(R.id.btnNativagionCancel);

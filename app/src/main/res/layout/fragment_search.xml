@@ -13,7 +13,7 @@
         app:queryHint="@string/search_hint"
         android:clickable="true"
         android:focusable="true"
-        android:background="@color/design_default_color_secondary">
+        android:background="?attr/colorSecondary">
 
     </androidx.appcompat.widget.SearchView>
 

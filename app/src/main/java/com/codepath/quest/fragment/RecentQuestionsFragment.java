@@ -80,6 +80,9 @@ public class RecentQuestionsFragment extends Fragment {
         toolbar.getMenu().clear();
         toolbar.inflateMenu(R.menu.menu_home_top_with_logout);
         HomeActivity.setToolbarText(toolbar, getString(R.string.home), "");
+        int oldToolbarColor = HomeActivity.getToolbarColor(toolbar);
+        HomeActivity.setToolbarColor(toolbar, oldToolbarColor
+                ,HomeActivity.getThemeColor(getContext(), R.attr.colorPrimary));
 
 
         // Set the action bar's logout button to be visible.

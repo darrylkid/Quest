@@ -33,10 +33,6 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
-        // Set up toolbar.
-        Toolbar toolbar = findViewById(R.id.tbLogin);
-        setSupportActionBar(toolbar);
-
         // Set up onClickListener for the login button.
         btnLogin = findViewById(R.id.btnLogin);
         View.OnClickListener loginHandler = new View.OnClickListener() {

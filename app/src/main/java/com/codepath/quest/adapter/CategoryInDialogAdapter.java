@@ -7,22 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.codepath.quest.R;
+import com.codepath.quest.activity.HomeActivity;
 import com.codepath.quest.model.Category;
 import com.codepath.quest.model.Page;
-import com.codepath.quest.model.Question;
 import com.codepath.quest.model.Section;
 import com.codepath.quest.model.Subject;
 import com.google.android.material.card.MaterialCardView;
-import com.parse.ParseObject;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -30,7 +26,7 @@ import java.util.List;
  * Like the main Category Adapter except for moving the
  * questions
  */
-public class MiniCategoryAdapter extends RecyclerView.Adapter<MiniCategoryAdapter.ViewHolder> {
+public class CategoryInDialogAdapter extends RecyclerView.Adapter<CategoryInDialogAdapter.ViewHolder> {
     Context context;
     List<Category> catergories;
     MaterialCardView mcvSelected;
@@ -39,7 +35,7 @@ public class MiniCategoryAdapter extends RecyclerView.Adapter<MiniCategoryAdapte
     Dialog dialog;
 
 
-    public MiniCategoryAdapter(Context context, List<Category> categories, Dialog dialog) {
+    public CategoryInDialogAdapter(Context context, List<Category> categories, Dialog dialog) {
         this.context = context;
         this.catergories = categories;
         mcvSelected = null;
@@ -119,7 +115,7 @@ public class MiniCategoryAdapter extends RecyclerView.Adapter<MiniCategoryAdapte
                 mcvCategory.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Section.querySections(MiniCategoryAdapter.this, subject);
+                        Section.querySections(CategoryInDialogAdapter.this, subject);
                     }
                 });
             } else if (category instanceof Section) {
@@ -136,7 +132,7 @@ public class MiniCategoryAdapter extends RecyclerView.Adapter<MiniCategoryAdapte
                 back.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Subject.querySubjects(MiniCategoryAdapter.this);
+                        Subject.querySubjects(CategoryInDialogAdapter.this);
                     }
                 });
 
@@ -144,7 +140,7 @@ public class MiniCategoryAdapter extends RecyclerView.Adapter<MiniCategoryAdapte
                 mcvCategory.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Page.queryPages(MiniCategoryAdapter.this, section);
+                        Page.queryPages(CategoryInDialogAdapter.this, section);
                     }
                 });
             } else if (category instanceof Page) {
@@ -155,7 +151,7 @@ public class MiniCategoryAdapter extends RecyclerView.Adapter<MiniCategoryAdapte
                 back.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Section.querySections(MiniCategoryAdapter.this, clickedSubject);
+                        Section.querySections(CategoryInDialogAdapter.this, clickedSubject);
                     }
                 });
 
@@ -178,7 +174,7 @@ public class MiniCategoryAdapter extends RecyclerView.Adapter<MiniCategoryAdapte
             clearSelectedCategory(resources);
 
             // Category view visual changes
-            int newToolbarColor = resources.getColor(R.color.teal_200);
+            int newToolbarColor = HomeActivity.getThemeColor(context, R.attr.colorSecondary);
             mcvCategory.setStrokeColor(newToolbarColor);
             mcvCategory.setStrokeWidth(resources.getInteger(R.integer.view_border_width));
         }

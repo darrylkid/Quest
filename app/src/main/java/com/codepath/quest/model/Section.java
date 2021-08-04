@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.codepath.quest.adapter.CategoryAdapter;
-import com.codepath.quest.adapter.MiniCategoryAdapter;
+import com.codepath.quest.adapter.CategoryInDialogAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
@@ -67,8 +67,8 @@ public class Section extends Category {
                     // Success! We obtained the subjects!
                     if (adapter instanceof CategoryAdapter) {
                         ((CategoryAdapter)adapter).addAll(sections);
-                    } else if (adapter instanceof MiniCategoryAdapter) {
-                        ((MiniCategoryAdapter)adapter).addAll(sections);
+                    } else if (adapter instanceof CategoryInDialogAdapter) {
+                        ((CategoryInDialogAdapter)adapter).addAll(sections);
                     }
                 } else {
                     // Failure in querying the subjects.

@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/colorPrimary">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tbSignup"
@@ -12,7 +13,7 @@
         android:elevation="4dp"
         android:theme="@style/Theme.Quest"
         app:popupTheme="@style/Theme.Quest"
-        app:titleTextColor="@color/white"/>
+        app:titleTextColor="@color/white" />
 
     <EditText
         android:id="@+id/etUsernameSignup"
@@ -21,6 +22,10 @@
         android:layout_marginTop="@dimen/vertical_edge_margin"
         android:layout_marginHorizontal="@dimen/horizontal_edge_margin"
         android:layout_below="@id/tbSignup"
+        android:textColor="?attr/colorSecondary"
+        android:textColorHint="?attr/colorSecondaryVariant"
+        android:background="@drawable/background_login_signup_edit_text"
+        android:gravity="center"
         android:inputType="text"
         android:autofillHints="false"
         android:hint="@string/username"/>
@@ -32,6 +37,10 @@
         android:layout_below="@id/etUsernameSignup"
         android:layout_marginTop="@dimen/distance_between_views"
         android:layout_marginHorizontal="@dimen/horizontal_edge_margin"
+        android:textColor="?attr/colorSecondary"
+        android:textColorHint="?attr/colorSecondaryVariant"
+        android:background="@drawable/background_login_signup_edit_text"
+        android:gravity="center"
         android:inputType="textPassword"
         android:autofillHints="false"
         android:hint="@string/password"/>

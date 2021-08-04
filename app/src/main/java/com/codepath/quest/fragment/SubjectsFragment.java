@@ -137,7 +137,7 @@ public class SubjectsFragment extends Fragment {
         int currentToolbarColor = HomeActivity.getToolbarColor(toolbar);
         HomeActivity.setToolbarText(toolbar, getString(R.string.subjects), "");
         HomeActivity.setToolbarColor(toolbar, currentToolbarColor
-                ,getResources().getColor(R.color.design_default_color_primary));
+                ,HomeActivity.getThemeColor(getContext(), R.attr.colorPrimary));
     }
 
 }

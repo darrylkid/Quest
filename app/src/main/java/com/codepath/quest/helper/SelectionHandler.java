@@ -254,7 +254,7 @@ public class SelectionHandler {
     private void startSelectionVisual(Context context, MaterialCardView mcvCategory) {
         // Category view visual changes.
         Resources resources = context.getResources();
-        int newToolbarColor = resources.getColor(R.color.teal_200);
+        int newToolbarColor = HomeActivity.getThemeColor(context, R.attr.colorSecondary);
         mcvCategory.setStrokeColor(newToolbarColor);
         mcvCategory.setStrokeWidth(resources.getInteger(R.integer.view_border_width));
         startSelectionToolbar(context, newToolbarColor);

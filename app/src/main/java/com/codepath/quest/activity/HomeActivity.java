@@ -15,6 +15,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -175,6 +176,12 @@ public class HomeActivity extends AppCompatActivity {
 
     public static int getToolbarColor(Toolbar toolbar) {
         return ((ColorDrawable) toolbar.getBackground()).getColor();
+    }
+
+    public static int getThemeColor(Context context, int attributeColorId) {
+        TypedValue value = new TypedValue();
+        context.getTheme().resolveAttribute(attributeColorId, value, true);
+        return value.data;
     }
 
     public static void startProgressBar(Context context) {

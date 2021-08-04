@@ -4,67 +4,78 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    tools:context=".activity.LoginActivity">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tbLogin"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:titleTextColor="@color/white"/>
+    tools:context=".activity.LoginActivity"
+    android:background="?attr/colorPrimary">
 
     <ImageView
-        android:id="@+id/ivLogoLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tbLogin"
-        android:layout_marginTop="@dimen/vertical_edge_margin"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_launcher_background"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_quest_icon"
+        android:scaleType="center"/>
 
-    <EditText
-        android:id="@+id/etUsernameLogin"
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ivLogoLogin"
-        android:layout_marginTop="@dimen/distance_between_views"
-        android:layout_marginHorizontal="@dimen/horizontal_edge_margin"
-        android:inputType="text"
-        android:autofillHints="false"
-        android:hint="@string/username"/>
+        android:layout_centerInParent="true"
+        android:layout_marginHorizontal="@dimen/login_horizontal_margin">
 
-    <EditText
-        android:id="@+id/etPasswordLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/etUsernameLogin"
-        android:layout_marginTop="@dimen/distance_between_views"
-        android:layout_marginHorizontal="@dimen/horizontal_edge_margin"
-        android:inputType="textPassword"
-        android:autofillHints="false"
-        android:hint="@string/password"/>
+        <ImageView
+            android:id="@+id/ivQuestLogoText"
+            android:layout_width="@dimen/quest_icon_text_width"
+            android:layout_height="@dimen/quest_icon_text_width"
+            android:src="@mipmap/quest_logo_text"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/app_name" />
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/etPasswordLogin"
-        android:layout_marginTop="@dimen/distance_between_views"
-        android:layout_marginHorizontal="@dimen/horizontal_edge_margin"
-        android:text="@string/login"/>
+        <EditText
+            android:id="@+id/etUsernameLogin"
+            android:layout_below="@id/ivQuestLogoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/colorSecondary"
+            android:textColorHint="?attr/colorSecondaryVariant"
+            android:background="@drawable/background_login_signup_edit_text"
+            android:layout_marginTop="@dimen/distance_between_views"
+            android:layout_marginHorizontal="@dimen/horizontal_edge_margin"
+            android:gravity="center"
+            android:inputType="text"
+            android:autofillHints="false"
+            android:hint="@string/username"/>
 
-    <Button
-        android:id="@+id/btnSignupInLoginActivity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btnLogin"
-        android:layout_marginTop="@dimen/distance_between_views"
-        android:layout_marginHorizontal="@dimen/horizontal_edge_margin"
-        android:text="@string/signup"/>
+        <EditText
+            android:id="@+id/etPasswordLogin"
+            android:layout_below="@id/etUsernameLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/colorSecondary"
+            android:textColorHint="?attr/colorSecondaryVariant"
+            android:background="@drawable/background_login_signup_edit_text"
+            android:layout_marginTop="@dimen/distance_between_views"
+            android:layout_marginHorizontal="@dimen/horizontal_edge_margin"
+            android:gravity="center"
+            android:inputType="textPassword"
+            android:autofillHints="false"
+            android:hint="@string/password"/>
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etPasswordLogin"
+            android:layout_marginTop="@dimen/distance_between_views"
+            android:layout_marginHorizontal="@dimen/horizontal_edge_margin"
+            android:text="@string/login"/>
+
+        <Button
+            android:id="@+id/btnSignupInLoginActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnLogin"
+            android:layout_marginTop="@dimen/distance_between_views"
+            android:layout_marginHorizontal="@dimen/horizontal_edge_margin"
+            android:text="@string/signup"/>
+    </RelativeLayout>
 
 </RelativeLayout>

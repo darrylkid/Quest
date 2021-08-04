@@ -63,6 +63,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:menu="@menu/menu_home_bottom"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+        android:background="?attr/colorPrimary"
+        app:itemIconTint="@drawable/state_text_color_on_primary"
+        app:itemTextColor="@drawable/state_text_color_on_primary"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

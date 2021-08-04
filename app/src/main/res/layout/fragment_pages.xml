@@ -19,6 +19,7 @@
         android:layout_marginBottom="@dimen/vertical_fab_margin"
         android:layout_marginEnd="@dimen/horizontal_fab_margin"
         android:src="@drawable/add"
+        android:foregroundTint="?attr/colorControlNormal"
         android:contentDescription="@string/new_page"/>
 
 </RelativeLayout>

@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|start"
                 android:layout_margin="@dimen/cardview_padding"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorPrimaryVariant"
                 android:textSize="@dimen/medium_text"
                 android:background="@null"/>
 

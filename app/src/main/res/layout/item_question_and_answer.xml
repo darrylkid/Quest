@@ -6,7 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:maxHeight="@dimen/max_QAndA_height"
     app:layout_constraintHeight_max="@dimen/max_QAndA_height"
-    android:scrollbars="none">
+    android:scrollbars="none"
+    android:background="@color/white">
 
     <RelativeLayout
         android:id="@+id/rlQAndA"
@@ -35,7 +36,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="@dimen/min_text_inside_card_height"
-                    android:textColor="@color/design_default_color_primary"
+                    android:textColor="?attr/colorPrimaryVariant"
                     android:textSize="@dimen/medium_text"
                     android:layout_margin="@dimen/cardview_padding"/>
                 <EditText
@@ -43,7 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="@dimen/min_text_inside_card_height"
-                    android:textColor="@color/design_default_color_primary"
+                    android:textColor="?attr/colorPrimaryVariant"
                     android:textSize="@dimen/medium_text"
                     android:background="@color/white"
                     android:layout_margin="@dimen/cardview_padding"

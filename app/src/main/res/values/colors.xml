@@ -9,4 +9,14 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FF5234</color>
     <color name="gray">#959393</color>
+    
+    <!-- Quest Colors -->
+    <color name="quest_primary">#222d45</color>
+    <color name="quest_primary_light">#4c5670</color>
+    <color name="quest_primary_dark">#00011e</color>
+
+    <color name="quest_secondary">#ffcc00</color>
+    <color name="quest_secondary_light">#ffff50</color>
+    <color name="quest_secondary_dark">#c79c00</color>
+    <color name="quest_secondary_darker">#926e00</color>
 </resources>

@@ -69,6 +69,9 @@ public class SearchFragment extends Fragment {
         toolbar.getMenu().clear();
         toolbar.inflateMenu(R.menu.menu_home_top_with_logout);
         HomeActivity.setToolbarText(toolbar, getString(R.string.search),"");
+        int oldToolbarColor = HomeActivity.getToolbarColor(toolbar);
+        HomeActivity.setToolbarColor(toolbar, oldToolbarColor
+            ,HomeActivity.getThemeColor(getContext(), R.attr.colorPrimary));
 
         // Set up the character sequence listener for the search view.
         SearchView search = ((HomeActivity) getContext()).findViewById(R.id.search);

@@ -169,6 +169,6 @@ public class SectionsFragment extends Fragment {
         toolbar.inflateMenu(R.menu.menu_home_top_without_logout);
         HomeActivity.setToolbarText(toolbar, parentSubject.getDescription(), "");
         HomeActivity.setToolbarColor(toolbar, currentToolbarColor
-                                    ,getResources().getColor(R.color.design_default_color_primary));
+                ,HomeActivity.getThemeColor(getContext(), R.attr.colorPrimary));
     }
 }

@@ -7,7 +7,8 @@
         android:title="@string/new_question_and_answer"
         app:showAsAction="ifRoom"
         app:itemTextColor="@color/white"
-        android:icon="@drawable/add"/>
+        android:icon="@drawable/add"
+        android:iconTint="@drawable/state_text_color_on_primary"/>
 
     <item
         android:id="@+id/iExportPDF"

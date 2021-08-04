@@ -166,6 +166,6 @@ public class PagesFragment extends Fragment {
                 ,HomeActivity.getCurrentSubject().getDescription()
                 ,parentSection.getDescription());
         HomeActivity.setToolbarColor(toolbar, currentToolbarColor
-                ,getResources().getColor(R.color.design_default_color_primary));
+                , HomeActivity.getThemeColor(getContext(), R.attr.colorPrimary));
     }
 }

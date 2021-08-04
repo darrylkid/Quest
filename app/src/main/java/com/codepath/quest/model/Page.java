@@ -4,14 +4,11 @@ import android.util.Log;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.codepath.quest.activity.HomeActivity;
 import com.codepath.quest.adapter.CategoryAdapter;
-import com.codepath.quest.adapter.MiniCategoryAdapter;
+import com.codepath.quest.adapter.CategoryInDialogAdapter;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -69,8 +66,8 @@ public class Page extends Category {
                         // Success! We obtained the subjects!
                         if (adapter instanceof CategoryAdapter) {
                             ((CategoryAdapter)adapter).addAll(pages);
-                        } else if (adapter instanceof MiniCategoryAdapter) {
-                            ((MiniCategoryAdapter)adapter).addAll(pages);
+                        } else if (adapter instanceof CategoryInDialogAdapter) {
+                            ((CategoryInDialogAdapter)adapter).addAll(pages);
                         }
 
                     } else {
