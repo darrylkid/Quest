@@ -21,6 +21,7 @@ import androidx.transition.TransitionManager;
 
 import com.codepath.quest.R;
 import com.codepath.quest.activity.HomeActivity;
+import com.codepath.quest.fragment.NotesFragment;
 import com.codepath.quest.model.Answer;
 import com.codepath.quest.model.Page;
 import com.codepath.quest.model.Question;
@@ -43,6 +44,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                           implements DraggableItemAdapter<RecyclerView.ViewHolder> {
     private Context context;
     private List<Question> questionList;
+    private boolean dragAndDropEnabled;
 
 
     public NotesAdapter(Context context, List<Question> questionList) {
@@ -51,6 +53,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         // Required for the drag-and-drop functionality to work.
         setHasStableIds(true);
+        dragAndDropEnabled = true;
     }
 
     @NonNull
@@ -100,18 +103,22 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public boolean onCheckCanStartDrag(@NonNull RecyclerView.ViewHolder holder, int position, int x, int y) {
-        View qAndAItem = holder.itemView;
-        RelativeLayout qAndADraggable = qAndAItem.findViewById(R.id.rlQAndA);
+        if (dragAndDropEnabled) {
+            View qAndAItem = holder.itemView;
+            RelativeLayout qAndADraggable = qAndAItem.findViewById(R.id.rlQAndA);
 
-        // Check if the x and y position of where the user long pressed is inside
-        // the qAndAItem.
-        int width = qAndADraggable.getWidth();
-        int height = qAndADraggable.getHeight();
-        int draggableXPos = qAndADraggable.getLeft();
-        int draggableYPos = qAndADraggable.getTop();
+            // Check if the x and y position of where the user long pressed is inside
+            // the qAndAItem.
+            int width = qAndADraggable.getWidth();
+            int height = qAndADraggable.getHeight();
+            int draggableXPos = qAndADraggable.getLeft();
+            int draggableYPos = qAndADraggable.getTop();
 
-        return ((x >= draggableXPos) && (x < (draggableXPos + width))
-                && (y >= draggableYPos) && (y < draggableYPos + height));
+            return ((x >= draggableXPos) && (x < (draggableXPos + width))
+                    && (y >= draggableYPos) && (y < draggableYPos + height));
+        } else {
+            return false;
+        }
     }
 
     @org.jetbrains.annotations.Nullable
@@ -198,6 +205,9 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                 @Override
                 public void onDoubleClick(View view) {
+                    // Disable the long press draggable functionality so that
+                    // the user can long press the edit functionality.
+                    dragAndDropEnabled = false;
                     startEditQuestionMode(question);
                 }
             }));
@@ -210,6 +220,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                 @Override
                 public void onDoubleClick(View view) {
+                    dragAndDropEnabled = false;
                     startEditAnswerMode(question.getAnswer());
                 }
             }));
@@ -327,6 +338,10 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (hasFocus == false) {
+                        // Renable the drag drop functioanlity when the
+                        // user is out of focus from the edit text.
+                        dragAndDropEnabled = true;
+
                         stopEditQuestionMode(question, etQuestion);
                     }
                 }
@@ -367,6 +382,10 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (!hasFocus) {
+                        // Re-enable the drag drop functioanlity when the
+                        // user is out of focus from the edit text.
+                        dragAndDropEnabled = true;
+
                         stopEditAnswerMode(answer, etAnswer);
                     }
                 }

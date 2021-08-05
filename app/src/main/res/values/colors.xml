@@ -19,4 +19,6 @@
     <color name="quest_secondary_light">#ffff50</color>
     <color name="quest_secondary_dark">#c79c00</color>
     <color name="quest_secondary_darker">#926e00</color>
+
+    <color name="quest_mind_map_background">#fffae6</color>
 </resources>

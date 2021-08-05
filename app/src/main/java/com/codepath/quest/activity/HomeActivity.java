@@ -14,7 +14,6 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,11 +26,9 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.codepath.quest.R;
-import com.codepath.quest.adapter.CategoryAdapter;
-import com.codepath.quest.fragment.RecentQuestionsFragment;
+import com.codepath.quest.fragment.MindMapFragment;
 import com.codepath.quest.fragment.SearchFragment;
 import com.codepath.quest.fragment.SubjectsFragment;
-import com.codepath.quest.model.Category;
 import com.codepath.quest.helper.Navigation;
 import com.codepath.quest.helper.QuestToast;
 import com.codepath.quest.model.Page;
@@ -41,13 +38,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -76,7 +69,7 @@ public class HomeActivity extends AppCompatActivity {
         // recent questions fragment.
         FragmentTransaction fragmentTransaction = Navigation.getFragmentManager()
                 .beginTransaction();
-        fragmentTransaction.replace(R.id.quest_fragment_container, new RecentQuestionsFragment())
+        fragmentTransaction.replace(R.id.quest_fragment_container, new MindMapFragment())
                 .commit();
 
         // Set up the listener for the bottom navigation bar.
@@ -87,15 +80,15 @@ public class HomeActivity extends AppCompatActivity {
                 FragmentTransaction fragmentTransaction = Navigation.getFragmentManager()
                         .beginTransaction();
                 int selectedItemId = item.getItemId();
-                if (selectedItemId == R.id.actionHome) {
-                    currentFragment = new RecentQuestionsFragment();
+                if (selectedItemId == R.id.mindMap) {
+                    currentFragment = new MindMapFragment();
                 } else if (selectedItemId == R.id.actionSearch) {
                     currentFragment = new SearchFragment();
                 } else if (selectedItemId == R.id.actionSubjects) {
                     currentFragment = new SubjectsFragment();
                 } else {
                     // Default: select the recent questions fragment.
-                    currentFragment = new RecentQuestionsFragment();
+                    currentFragment = new MindMapFragment();
                 }
                 // Link the fragments' XML layouts to the fragments in Java code and show
                 // the fragment.

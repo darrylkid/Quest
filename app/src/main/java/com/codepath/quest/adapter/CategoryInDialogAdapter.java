@@ -106,15 +106,15 @@ public class CategoryInDialogAdapter extends RecyclerView.Adapter<CategoryInDial
                 // sees the list of subjects. Simply hide the back button.
                 back.setVisibility(View.GONE);
 
-                // Set the clicked subject so that when the user
-                // clicks back when looking at the list of pages,
-                // the user sees the correct sections spawned.
-                clickedSubject = subject;
-
                 // Set up an on click listener for this Subject item.
                 mcvCategory.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        // Set the clicked subject so that when the user
+                        // clicks back when looking at the list of pages,
+                        // the user sees the correct sections spawned.
+                        clickedSubject = subject;
+
                         Section.querySections(CategoryInDialogAdapter.this, subject);
                     }
                 });

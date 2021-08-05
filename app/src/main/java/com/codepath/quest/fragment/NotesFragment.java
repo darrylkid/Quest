@@ -95,6 +95,8 @@ public class NotesFragment extends Fragment {
     private RecyclerView rvNotes;
     private NotesAdapter notesAdapter;
     private List<Question> questionsList;
+    private static RecyclerViewDragDropManager dragDropManager; // Recycler view wrapper for getting the
+                                                         // item drag and drop functionality to work
     private Page parentPage;
 
     // Required empty public constructor
@@ -144,7 +146,7 @@ public class NotesFragment extends Fragment {
         startNotesFragmentToolbar();
 
         // Set up recycler view.
-        RecyclerViewDragDropManager dragDropManager = new RecyclerViewDragDropManager();
+        dragDropManager = new RecyclerViewDragDropManager();
 
         rvNotes = view.findViewById(R.id.rvNotes);
 

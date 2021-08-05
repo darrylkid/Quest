@@ -61,4 +61,7 @@ dependencies {
 
     // Advanced RecyclerView library that allows drag & drop to be possible
     implementation 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:1.0.0'
+
+    // Mind map library
+    implementation 'com.github.JagarYousef:Mindo:2.0.0'
 }
