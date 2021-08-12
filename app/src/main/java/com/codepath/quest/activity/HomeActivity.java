@@ -66,10 +66,10 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Initialize the home activity to display the
-        // recent questions fragment.
+        // subjects fragment.
         FragmentTransaction fragmentTransaction = Navigation.getFragmentManager()
                 .beginTransaction();
-        fragmentTransaction.replace(R.id.quest_fragment_container, new MindMapFragment())
+        fragmentTransaction.replace(R.id.quest_fragment_container, new SubjectsFragment())
                 .commit();
 
         // Set up the listener for the bottom navigation bar.
@@ -80,15 +80,15 @@ public class HomeActivity extends AppCompatActivity {
                 FragmentTransaction fragmentTransaction = Navigation.getFragmentManager()
                         .beginTransaction();
                 int selectedItemId = item.getItemId();
-                if (selectedItemId == R.id.mindMap) {
+                if (selectedItemId == R.id.actionMindMap) {
                     currentFragment = new MindMapFragment();
                 } else if (selectedItemId == R.id.actionSearch) {
                     currentFragment = new SearchFragment();
                 } else if (selectedItemId == R.id.actionSubjects) {
                     currentFragment = new SubjectsFragment();
                 } else {
-                    // Default: select the recent questions fragment.
-                    currentFragment = new MindMapFragment();
+                    // Default: select the Subjects fragment.
+                    currentFragment = new SubjectsFragment();
                 }
                 // Link the fragments' XML layouts to the fragments in Java code and show
                 // the fragment.

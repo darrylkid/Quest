@@ -30,6 +30,7 @@ public class TextToPDF {
     public static void exportDataToPDF(Context context, NotesAdapter adapter, String fileName) throws IOException {
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString();
         File file = new File(path, fileName + ".pdf");
+        file.createNewFile();
         PdfWriter writer = null;
         try {
             //writer = new PdfWriter(path );

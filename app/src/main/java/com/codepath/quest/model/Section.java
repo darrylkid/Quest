@@ -1,11 +1,13 @@
 package com.codepath.quest.model;
 
 import android.util.Log;
+import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.codepath.quest.adapter.CategoryAdapter;
 import com.codepath.quest.adapter.CategoryInDialogAdapter;
+import com.codepath.quest.helper.MindMapRenderer;
 import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
@@ -80,31 +82,28 @@ public class Section extends Category {
     }
 
     /**
-     * Work in progress...
+     * The mindmap version of querying the sections.
+     *
+     * @param mindMapRenderer the renderer for the mind map
+     * @param parentSubject the parent subject to filter the section search with
      */
-    public Subject queryParent() {
-        ParseQuery<Subject> query = ParseQuery.getQuery(Subject.class);
+    public static void querySections(MindMapRenderer mindMapRenderer, Subject parentSubject) {
+        ParseQuery<Section> query = ParseQuery.getQuery(Section.class);
+        query.include(Constants.KEY_PARENT);
 
-        // This helper class exists to pass the subject outside the
-        // callback object.
-        class SubjectHolder {
-            Subject subject;
+        // Filter the query to find sections under the current user.
+        query.whereEqualTo(Constants.KEY_USER, ParseUser.getCurrentUser());
 
-            private void setSubject(Subject subject) {
-                this.subject = subject;
-            }
-        }
-        SubjectHolder subjectHolder = new SubjectHolder();
-        FindCallback<Subject> findParentSubjectHandler = new FindCallback<Subject>() {
+        // Filter the query to find sections under the parent subject.
+        query.whereEqualTo(Constants.KEY_PARENT, parentSubject);
+
+        FindCallback<Section> findSectionsCallBack = new FindCallback<Section>() {
             @Override
-            public void done(List<Subject> subjectList, ParseException e) {
-                subjectHolder.setSubject(subjectList.get(0));
-                Log.i(Constants.KEY_SECTION, "Getting parent success!");
+            public void done(List<Section> sections, ParseException e) {
+                mindMapRenderer.renderSections(sections, parentSubject);
             }
         };
-        query.findInBackground(findParentSubjectHandler);
-
-        return subjectHolder.subject;
+        query.findInBackground(findSectionsCallBack);
     }
 
 }

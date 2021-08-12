@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.codepath.quest.adapter.CategoryAdapter;
 import com.codepath.quest.adapter.CategoryInDialogAdapter;
+import com.codepath.quest.helper.MindMapRenderer;
 import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
@@ -77,39 +78,23 @@ public class Subject extends Category {
     }
 
     /**
-     * Progress is still being made.
+     * The mindmap version of querying the sections.
      *
-     * @param objectId
-     * @param newSubjectName
+     * @param mindMapRenderer the renderer for the mind map
      */
-    /*
-    public static void updateSubjectName(String objectId, String newSubjectName) {
-        ParseObject subject = new ParseObject(KEY_SUBJECT);
-        subject.put(HomeActivity.KEY_DESCRIPTION, newSubjectName);
-        subject.saveInBackground(new SaveCallback() {
+    public static void querySubjects(MindMapRenderer mindMapRenderer) {
+        ParseQuery<Subject> query = ParseQuery.getQuery(Subject.class);
+
+        // Filter the query to find subjects under the current user.
+        query.whereEqualTo(Constants.KEY_USER, ParseUser.getCurrentUser());
+
+        FindCallback<Subject> findSectionsCallBack = new FindCallback<Subject>() {
             @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    // Successfully changed the subject name!
-                    Log.i(KEY_SUBJECT, "Successfully changed the subject name!");
-                } else {
-                    Log.e(KEY_SUBJECT, "Failed to update the subject name.", e);
-                }
+            public void done(List<Subject> subjects, ParseException e) {
+                mindMapRenderer.renderSubjects(subjects);
             }
-        });
-    }
-
-     */
-
-    // Deleting a subject deletes the  sections, pages, and questions that
-    // fall under the subject.
-
-    /**
-     * Progress is still being made.
-     *
-     */
-    public static void deleteSubject() {
-
+        };
+        query.findInBackground(findSectionsCallBack);
     }
 
 

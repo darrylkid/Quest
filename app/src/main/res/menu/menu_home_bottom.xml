@@ -2,18 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/mindMap"
-        android:title="@string/mind_map"
-        android:icon="@drawable/ic_node"
-        app:showAsAction="ifRoom"/>
+        android:id="@+id/actionSubjects"
+        android:title="@string/subjects"
+        android:icon="@drawable/subjects"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/actionSearch"
         android:title="@string/search"
         android:icon="@drawable/search"
         app:showAsAction="ifRoom"/>
+
     <item
-        android:id="@+id/actionSubjects"
-        android:title="@string/subjects"
-        android:icon="@drawable/subjects"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/actionMindMap"
+        android:title="@string/mind_map"
+        android:icon="@drawable/ic_node"
+        app:showAsAction="ifRoom"/>
 </menu>

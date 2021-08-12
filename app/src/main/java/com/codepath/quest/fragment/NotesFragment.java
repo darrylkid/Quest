@@ -310,7 +310,7 @@ public class NotesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 try {
-                    TextToPDF.exportDataToPDF(getContext(), notesAdapter, fileName);
+                    TextToPDF.exportDataToPDF(((HomeActivity)getContext()), notesAdapter, fileName);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

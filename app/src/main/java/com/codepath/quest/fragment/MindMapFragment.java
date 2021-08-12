@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -14,54 +15,27 @@ import android.view.ViewGroup;
 
 import com.codepath.quest.R;
 import com.codepath.quest.activity.HomeActivity;
+import com.codepath.quest.helper.MindMapRenderer;
+import com.codepath.quest.helper.QuestToast;
+import com.codepath.quest.model.Subject;
 
 import org.jetbrains.annotations.NotNull;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MindMapFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import me.jagar.mindmappingandroidlibrary.Views.ConnectionTextMessage;
+import me.jagar.mindmappingandroidlibrary.Views.Item;
+import me.jagar.mindmappingandroidlibrary.Views.ItemLocation;
+import me.jagar.mindmappingandroidlibrary.Views.MindMappingView;
+import me.jagar.mindmappingandroidlibrary.Zoom.ZoomLayout;
+
 public class MindMapFragment extends Fragment {
+    static private View root;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public MindMapFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RecentQuestionsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MindMapFragment newInstance(String param1, String param2) {
-        MindMapFragment fragment = new MindMapFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    // Required empty public constructor
+    public MindMapFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -72,9 +46,9 @@ public class MindMapFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        this.root = view;
         // Set the toolbar title.
         Toolbar toolbar = ((AppCompatActivity)getActivity()).findViewById(R.id.tbHome);
         toolbar.getMenu().clear();
@@ -91,6 +65,19 @@ public class MindMapFragment extends Fragment {
             logoutIcon.setVisible(true);
         }
 
+        // Initialize the mind map.
+        MindMappingView mindMap = view.findViewById(R.id.mindMap);
+        MindMapRenderer renderer = new MindMapRenderer(getContext(), mindMap);
+        Subject.querySubjects(renderer);
+
+        //((Item)item.getChildAt(0)).setContent("This child's content has been changed by the parent");
+
     }
+
+    public static void clearMindMap(MindMappingView mindMap) {
+        mindMap.removeAllViews();
+        ((ZoomLayout)root.findViewById(R.id.zoom)).removeAllViews();
+    }
+
 
 }

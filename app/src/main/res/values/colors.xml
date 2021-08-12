@@ -14,6 +14,7 @@
     <color name="quest_primary">#222d45</color>
     <color name="quest_primary_light">#4c5670</color>
     <color name="quest_primary_dark">#00011e</color>
+    <color name="quest_primary_transparent">#BF222D45</color>
 
     <color name="quest_secondary">#ffcc00</color>
     <color name="quest_secondary_light">#ffff50</color>
